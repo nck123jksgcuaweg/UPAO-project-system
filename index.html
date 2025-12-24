@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPAO Performing Arts Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Added QR code library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo-section">
+                <img src="upao.jpg" alt="UPAO Logo" class="logo-image">
+                <div class="logo-text">
+                    Cultural Affairs Office
+                    <span class="logo-subtitle">University Performing Arts organization (upao)</span>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-button" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#" onclick="openReservationModal(); return false;">Reserve Events</a></li>
+                <li><a href="#" onclick="openLoginModal('login.html')">Login</a></li>
+            </ul>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search events..." id="searchInput" oninput="handleSearch()">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Carousel -->
+    <div class="carousel-container" id="home">
+        <div class="carousel" id="carousel">
+            <div class="carousel-slide">
+                <img src="image2.jpg" alt="Theater Stage">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">Welcome to UPAO</h1>
+                    <p class="carousel-subtitle">Experience Excellence in Performing Arts</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="image3.jpg" alt="Orchestra Performance">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">World-Class Performances</h1>
+                    <p class="carousel-subtitle">Bringing the Best Artists to Your Stage</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="image4.jpg" alt="Ballet Performance">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">Artistic Excellence</h1>
+                    <p class="carousel-subtitle">Celebrating Creativity and Talent</p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="carousel-arrow carousel-arrow-left" onclick="changeSlide(-1)">‹</button>
+        <button class="carousel-arrow carousel-arrow-right" onclick="changeSlide(1)">›</button>
+        
+        <div class="carousel-dots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+        </div>
+    </div>
+
+    <!-- Events Section -->
+    <section class="events-section" id="events">
+        <div class="section-header">
+            <h2 class="section-title">Upcoming Events</h2>
+            <p class="section-subtitle">Discover our diverse range of performances and cultural experiences</p>
+        </div>
+
+        <div class="events-filters">
+            <button class="filter-button active" data-category="all" onclick="filterEvents('all')">All Events</button>
+            <button class="filter-button" data-category="theater" onclick="filterEvents('theater')">Theater</button>
+            <button class="filter-button" data-category="music" onclick="filterEvents('music')">Music</button>
+            <button class="filter-button" data-category="dance" onclick="filterEvents('dance')">Dance</button>
+            <button class="filter-button" data-category="special" onclick="filterEvents('special')">Special Events</button>
+        </div>
+
+        <div class="events-grid">
+            <div class="event-category" data-category="theater">
+                <div class="event-image-wrapper">
+                    <img src="image8.jpg" alt="Theater Performance" class="event-image">
+                    <span class="category-badge">Theater</span>
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Shakespeare's Hamlet</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 June 15, 2024</span>
+                        <span class="event-meta-item">⏰ 7:30 PM</span>
+                        <span class="event-meta-item">📍 Main Hall</span>
+                    </div>
+                    <p class="event-info">A timeless tragedy brought to life by our talented ensemble. Experience the depth and drama of Shakespeare's masterpiece.</p>
+                    <div class="event-actions">
+                        <button class="event-action-btn primary" onclick="openEventDetails('Hamlet')">Details</button>
+                        <button class="event-action-btn" onclick="openReservationModal('Hamlet')">Book Tickets</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="event-category" data-category="music">
+                <div class="event-image-wrapper">
+                    <img src="image4.jpg" alt="Symphony Concert" class="event-image">
+                    <span class="category-badge">Music</span>
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Chorale</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 June 22, 2024</span>
+                        <span class="event-meta-item">⏰ 8:00 PM</span>
+                        <span class="event-meta-item">📍 Concert Hall</span>
+                    </div>
+                    <p class="event-info">An evening of classical masterpieces performed by the UPAO Symphony Orchestra featuring works by Beethoven and Mozart.</p>
+                    <div class="event-actions">
+                        <button class="event-action-btn primary" onclick="openEventDetails('Symphony')">Details</button>
+                        <button class="event-action-btn" onclick="openReservationModal('Symphony')">Book Tickets</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="event-category" data-category="dance">
+                <div class="event-image-wrapper">
+                    <img src="image3.jpg" alt="Ballet Performance" class="event-image">
+                    <span class="category-badge">Dance</span>
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Swan Lake Ballet</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 July 1, 2024</span>
+                        <span class="event-meta-item">⏰ 7:00 PM</span>
+                        <span class="event-meta-item">📍 Grand Theater</span>
+                    </div>
+                    <p class="event-info">Tchaikovsky's beloved ballet returns with stunning choreography and breathtaking performances by world-class dancers.</p>
+                    <div class="event-actions">
+                        <button class="event-action-btn primary" onclick="openEventDetails('Swan Lake')">Details</button>
+                        <button class="event-action-btn" onclick="openReservationModal('Swan Lake')">Book Tickets</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="event-category" data-category="special">
+                <div class="event-image-wrapper">
+                    <img src="image6.jpg" alt="Rondalla" class="event-image">
+                    <span class="category-badge">Special</span>
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Rondalla</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 July 15, 2024</span>
+                        <span class="event-meta-item">⏰ 6:00 PM</span>
+                        <span class="event-meta-item">📍 All Venues</span>
+                    </div>
+                    <p class="event-info">Join us for our signature annual event celebrating arts and culture with performances, exhibitions, and special guests.</p>
+                    <div class="event-actions">
+                        <button class="event-action-btn primary" onclick="openEventDetails('Gala')">Details</button>
+                        <button class="event-action-btn" onclick="openReservationModal('Gala')">Book Tickets</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="event-category" data-category="music">
+                <div class="event-image-wrapper">
+                    <img src="image7.jpg" alt="Live Band" class="event-image">
+                    <span class="category-badge">Music</span>
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Live Band</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 July 20, 2024</span>
+                        <span class="event-meta-item">⏰ 9:00 PM</span>
+                        <span class="event-meta-item">📍 Outdoor Pavilion</span>
+                    </div>
+                    <p class="event-info">Smooth jazz melodies under the night sky. An intimate evening featuring renowned jazz artists and cocktails.</p>
+                    <div class="event-actions">
+                        <button class="event-action-btn primary" onclick="openEventDetails('Jazz')">Details</button>
+                        <button class="event-action-btn" onclick="openReservationModal('Jazz')">Book Tickets</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="event-category" data-category="theater">
+                <div class="event-image-wrapper">
+                    <img src="/placeholder.svg?height=280&width=400" alt="Modern Play" class="event-image">
+                    <span class="category-badge">Theater</span>
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Contemporary Voices</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 August 5, 2024</span>
+                        <span class="event-meta-item">⏰ 7:30 PM</span>
+                        <span class="event-meta-item">📍 Studio Theater</span>
+                    </div>
+                    <p class="event-info">A collection of modern one-act plays exploring contemporary themes and pushing theatrical boundaries.</p>
+                    <div class="event-actions">
+                        <button class="event-action-btn primary" onclick="openEventDetails('Contemporary')">Details</button>
+                        <button class="event-action-btn" onclick="openReservationModal('Contemporary')">Book Tickets</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <h2 class="about-title">About UPAO Performing Arts Center</h2>
+            <div class="about-content">
+                <div class="about-card">
+                    <h3>Our Mission</h3>
+                    <p>To inspire, educate, and enrich our community through exceptional performing arts experiences that celebrate diversity and artistic excellence.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Our History</h3>
+                    <p>Established in 1983, UPAO has been a cornerstone of cultural arts for over four decades, bringing world-class performances to our community.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Our Venues</h3>
+                    <p>State-of-the-art facilities including a 1,200-seat main hall, intimate studio theater, and outdoor pavilion for diverse performance needs.</p>
+                </div>
+            </div>
+
+            <!-- Simplified to single Cultural Director with plain text list -->
+            <div style="margin-top: 40px;">
+                <h3>Cultural Director</h3>
+                <p>Dr. Maria Santos</p>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3>UPAO Officers</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li><strong>President:</strong> Juan Dela Cruz</li>
+                    <li><strong>Vice President:</strong> Maria Garcia</li>
+                    <li><strong>Secretary:</strong> Carlos Reyes</li>
+                    <li><strong>Treasurer:</strong> Ana Mendoza</li>
+                    <li><strong>Auditor:</strong> Roberto Santos</li>
+                    <li><strong>Public Relations Officer:</strong> Sofia Torres</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>UPAO Performing Arts Center<br>
+                123 Arts Boulevard<br>
+                Cultural District, CD 12345<br>
+                Phone: (555) 123-4567<br>
+                Email: info@upaoarts.org</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <p><a href="#home">Home</a><br>
+                <a href="#events">Events</a><br>
+                <a href="#about">About Us</a><br>
+                <a href="#" onclick="openLoginModal('member')">Member Login</a><br>
+                <a href="#">Support Us</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <p>Follow us on social media for updates on performances, behind-the-scenes content, and special announcements.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 UPAO Performing Arts Center. All rights reserved. | Celebrating Excellence Since 1983-1993</p>
+        </div>
+    </footer>
+
+    <!-- Event Details Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEventModal()">&times;</span>
+            <h2 class="modal-event-title" id="eventTitle"></h2>
+            <div class="modal-event-detail">
+                <div class="modal-label">Date & Time</div>
+                <div class="modal-value" id="eventDateTime"></div>
+            </div>
+            <div class="modal-event-detail">
+                <div class="modal-label">Venue</div>
+                <div class="modal-value" id="eventVenue"></div>
+            </div>
+            <div class="modal-event-detail">
+                <div class="modal-label">Description</div>
+                <div class="modal-value" id="eventDescription"></div>
+            </div>
+            <div class="modal-event-detail">
+                <div class="modal-label">Ticket Prices</div>
+                <div class="modal-value" id="eventPrices"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="closeEventModal(); setTimeout(() => openReservationModal(), 300)">Book Now</button>
+                <button class="modal-btn secondary" onclick="closeEventModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content login-modal-content">
+            <div class="modal-header">
+                <div class="modal-logo-section">
+                    <img src="upao.jpg" alt="UPAO Logo" class="modal-logo">
+                    <div class="modal-logo-text">
+                        <h3>UPAO</h3>
+                        <p>Cultural Arts Group</p>
+                    </div>
+                </div>
+                <button class="close-button" onclick="closeLoginModal()">&times;</button>
+            </div>
+
+            <!-- Tabs for login/register -->
+            <div class="tabs">
+                <button class="tab active" onclick="showForm('login')">LOGIN</button>
+                <button class="tab" onclick="showForm('register')">REGISTER</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="form-container active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="login-id">Student ID or Email</label>
+                        <input type="text" class="form-input" id="login-id" required placeholder="Enter your Student ID or Email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="login-password">Password</label>
+                        <input type="password" class="form-input" id="login-password" required placeholder="Enter your password">
+                    </div>
+                    <div class="error-message" id="login-message"></div>
+                    <button type="submit" class="submit-button">LOGIN</button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="form-container">
+                <form onsubmit="handleRegister(event)">
+                    <div class="section-title-modal">MEMBERSHIP CLASSIFICATION</div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Art Category:</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label"><input type="checkbox" name="artCategory" value="Music"> Music</label>
+                            <label class="checkbox-label"><input type="checkbox" name="artCategory" value="Dance"> Dance</label>
+                            <label class="checkbox-label"><input type="checkbox" name="artCategory" value="Theater"> Theater</label>
+                            <label class="checkbox-label"><input type="checkbox" name="artCategory" value="Literary"> Literary</label>
+                            <label class="checkbox-label"><input type="checkbox" name="artCategory" value="Visual Arts"> Visual Arts</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="specify">Specify:</label>
+                        <input type="text" class="form-input" id="specify" placeholder="Specify your expertise">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Member Type:</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="memberType" value="New" required> New Member</label>
+                            <label class="radio-label"><input type="radio" name="memberType" value="Old"> Old Member</label>
+                            <label class="radio-label"><input type="radio" name="memberType" value="Honorary">Honorary Member</label>
+                        </div>
+                    </div>
+
+                    <div class="section-title-modal">PERSONAL INFORMATION</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="lastName">Last Name *</label>
+                            <input type="text" class="form-input" id="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="firstName">First Name *</label>
+                            <input type="text" class="form-input" id="firstName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="middleName">Middle Name</label>
+                            <input type="text" class="form-input" id="middleName">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="studentId">Student ID *</label>
+                            <input type="text" class="form-input" id="studentId" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="birthdate">Birthdate *</label>
+                            <input type="date" class="form-input" id="birthdate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sex *</label>
+                            <div class="radio-group">
+                                <label class="radio-label"><input type="radio" name="sex" value="M" required> M</label>
+                                <label class="radio-label"><input type="radio" name="sex" value="F"> F</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="nationality">Nationality</label>
+                            <input type="text" class="form-input" id="nationality" value="Filipino">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="religion">Religion</label>
+                            <input type="text" class="form-input" id="religion">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="civilStatus">Civil Status</label>
+                            <select class="form-input" id="civilStatus">
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="bloodType">Blood Type</label>
+                            <input type="text" class="form-input" id="bloodType" placeholder="e.g. O+">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="mobile">Mobile Number *</label>
+                            <input type="tel" class="form-input" id="mobile" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email *</label>
+                            <input type="email" class="form-input" id="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="homeAddress">Home Address</label>
+                        <input type="text" class="form-input" id="homeAddress">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="campusAddress">Campus Address</label>
+                        <input type="text" class="form-input" id="campusAddress">
+                    </div>
+
+                    <div class="section-title-modal">ACCOUNT CREDENTIALS</div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password *</label>
+                        <input type="password" class="form-input" id="password" required minlength="6">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Confirm Password *</label>
+                        <input type="password" class="form-input" id="confirmPassword" required>
+                    </div>
+
+                    <div class="error-message" id="register-message"></div>
+                    <button type="submit" class="submit-button">SUBMIT REGISTRATION</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Modal -->
+    <div id="calendarModal" class="modal">
+        <div class="modal-content calendar-modal-content">
+            <span class="close" onclick="closeCalendarModal()">&times;</span>
+            <div class="calendar-header">
+                <button class="calendar-nav" onclick="changeMonth(-1)">‹</button>
+                <h2 class="calendar-title" id="calendarTitle"></h2>
+                <button class="calendar-nav" onclick="changeMonth(1)">›</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+    </div>
+
+    <!-- Floating Calendar Button -->
+    <button class="floating-calendar" onclick="openCalendarModal()" title="View Calendar">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+    </button>
+
+    <!-- Event Reservation Modal -->
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <!-- Simplified ticket header - removed perforations and excessive styling -->
+            <div class="ticket-header">
+                <div>
+                    <h2 class="ticket-title">Book Your Ticket</h2>
+                    <p class="ticket-subtitle">Cultural Show Reservation</p>
+                </div>
+                <button class="close-button" onclick="closeReservationModal()">&times;</button>
+            </div>
+
+            <form id="eventReservationForm" onsubmit="handleReservationSubmit(event)" class="ticket-form">
+                
+                <!-- Simplified event information section -->
+                <div class="form-section">
+                    <h3 class="section-title">Event Details</h3>
+                    
+                    <div class="event-info-display">
+                        <div class="info-row">
+                            <span class="info-label">Event Name:</span>
+                            <span class="info-value" id="display-event-name">Shakespeare's Hamlet</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Date & Time:</span>
+                            <span class="info-value" id="display-event-datetime">June 15, 2024 at 7:30 PM</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Venue:</span>
+                            <span class="info-value" id="display-event-venue">Main Hall</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Ticket Type:</span>
+                            <span class="info-value" id="display-ticket-type">General Admission</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simplified personal information section -->
+                <div class="form-section">
+                    <h3 class="section-title">Your Information</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="res-fullName">Full Name *</label>
+                        <input type="text" class="form-input" id="res-fullName" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="res-email">Email Address *</label>
+                        <input type="email" class="form-input" id="res-email" required placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="res-mobile">Mobile Number *</label>
+                        <input type="tel" class="form-input" id="res-mobile" required placeholder="+1 (555) 123-4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="res-address">Address (Optional)</label>
+                        <textarea class="form-input form-textarea" id="res-address" rows="2" placeholder="Enter your address"></textarea>
+                    </div>
+                </div>
+
+                <!-- Simplified confirmation section -->
+                <div class="form-section">
+                    <h3 class="section-title">Confirmation</h3>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="res-acknowledge" required>
+                            <span>I acknowledge that tickets will be collected on-site *</span>
+                        </label>
+                    </div>
+
+                    <div class="info-notice">
+                        <strong>Important:</strong> Tickets are free. Please bring your confirmation email to claim your ticket at the venue.
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="res-receive-confirmation">
+                            <span>Receive confirmation via SMS/email</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Simplified footer actions -->
+                <div class="modal-actions">
+                    <button type="submit" class="submit-button">Submit Booking</button>
+                    <button type="button" class="modal-btn secondary" onclick="closeReservationModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="index.js"></script>
+    
+</body>
+</html>
