@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPAO Admin System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }   
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #e8e8e8;
+            color: #000000f5;
+            line-height: 1.4;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: #2c2c2c;
+            color: #fff;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            border-right: 3px solid #000;
+        }
+
+        .sidebar-header {
+            padding: 15px;
+            background: #1a1a1a;
+            border-bottom: 2px solid #000;
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #dbdedb;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .sidebar-nav {
+            padding: 10px 0;
+        }
+
+        .nav-section h3 {
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #666;
+            padding: 10px 15px;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 15px;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 13px;
+            border-left: 3px solid transparent;
+            transition: all 0.1s;
+        }
+
+        .nav-link:hover {
+            background: #3a3a3a;
+            color: #fff;
+            border-left-color: #cccccc;
+        }
+
+        .nav-item.active .nav-link {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-left-color: #efefe6;
+            font-weight: bold;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            width: 220px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-top: 2px solid #000;
+        }
+
+        .user-info {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .user-name {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+            background: #e8e8e8;
+        }
+
+        .header {
+            background: #fff;
+            border-bottom: 3px solid #000;
+            padding: 15px 25px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            background: #fff;
+            border: 2px solid #000;
+            margin-bottom: 20px;
+        }
+
+        .table-header {
+            background: #000;
+            color: #ffffff;
+            padding: 10px 15px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        thead {
+            background: #d0d0d0;
+        }
+
+        th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: bold;
+            color: #000;
+            text-transform: uppercase;
+            border: 1px solid #999;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            font-size: 12px;
+            color: #000;
+            background: #fff;
+        }
+
+        tbody tr:nth-child(even) td {
+            background: #f5f5f5;
+        }
+
+     
+
+        .member-row {
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 6px 12px;
+            border: 2px solid #000;
+            background: #ffffff;
+            color: #000;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.1s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: #eff5ef;
+        }
+
+        .btn-primary:hover {
+            background: #efefed;
+            color: #000;
+        }
+
+        .btn-success {
+            background: #ffffff;
+            color: #000000;
+            border-color: #006600;
+        }
+
+        .btn-success:hover {
+            background: #159d00;
+        }
+
+        .btn-danger {
+            background: #ffffff;
+            color: #000000;
+            border-color: #000000;
+        }
+
+        .btn-danger:hover {
+            background: #ff0000;
+        }
+
+        .btn-info {
+            background: #0066cc;
+            color: #fff;
+            border-color: #004499;
+        }
+
+        .btn-info:hover {
+            background: #0088ff;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 10px;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 4px 8px;
+            font-size: 10px;
+            text-transform: uppercase;
+            border: 2px solid;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #bdad21;
+            color: #fffdfd;
+        }
+
+        .status-approved {
+            background: #5fa74d;
+            color: #ffffff;
+        }
+
+        .status-rejected {
+            background: #c60c0c;
+            color: #fdfdfd;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #000;
+            font-size: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #fffcfc;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            background: #f6f4f4;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-container {
+            background: #fff;
+            border: 3px solid #000;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 15px;
+            background: #000;
+            color: #fafbfa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #000;
+        }
+
+        .modal-header h2 {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ffffff;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px;
+            border-top: 2px solid #000;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            background: #f0f0f0;
+        }
+
+        .filter-container {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-container select {
+            width: auto;
+            min-width: 200px;
+        }
+
+        /* File list */
+        .file-list {
+            margin-top: 10px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #6e4c4c;
+            background: #f5f5f5;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .file-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Profile modal */
+        .profile-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #000;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: #000;
+            color: #fff;
+            border: 3px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .profile-info h3 {
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .detail-row:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .detail-value {
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-footer {
+                position: relative;
+                width: 100%;
+            }
+
+            table {
+                font-size: 10px;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-text">
+                    <h1>UPAO</h1>
+                    <p>Admin System</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>Menu</h3>
+                    <ul class="nav-menu">
+                        <li class="nav-item active">
+                            <a class="nav-link" data-page="dashboard">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-page="members">
+                                <i class="fas fa-users"></i> Members
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-page="events">
+                                <i class="fas fa-calendar"></i> Events
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-page="accomplishment">
+                                <i class="fas fa-trophy"></i> Accomplishments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-page="requests">
+                                <i class="fas fa-file-text"></i> Requests
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-name">ADMIN USER</div>
+                    <div>Administrator</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-title">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageSubtitle">System Overview</p>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="content">
+                <!-- Dashboard Content -->
+                <div class="page-content active" id="dashboardContent">
+                    <!-- System Statistics Table -->
+                    <div class="table-wrapper">
+                        <div class="table-header">System Statistics</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Value</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Members</td>
+                                    <td><strong>156</strong></td>
+                                    <td><span class="status-badge status-approved">ACTIVE</span></td>
+                                    <td>2024-12-22</td>
+                                </tr>
+                                <tr>
+                                    <td>Active Events</td>
+                                    <td><strong>12</strong></td>
+                                    <td><span class="status-badge status-approved">SCHEDULED</span></td>
+                                    <td>2024-12-22</td>
+                                </tr>
+                                <tr>
+                                    <td>Attendance Rate</td>
+                                    <td><strong>87%</strong></td>
+                                    <td><span class="status-badge status-approved">GOOD</span></td>
+                                    <td>2024-12-21</td>
+                                </tr>
+                                <tr>
+                                    <td>Pending Requests</td>
+                                    <td><strong>5</strong></td>
+                                    <td><span class="status-badge status-pending">PENDING</span></td>
+                                    <td>2024-12-22</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Recent Activity Table -->
+                    <div class="table-wrapper">
+                        <div class="table-header">Recent Activity Log</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Activity</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>001</td>
+                                    <td>New member registration</td>
+                                    <td>Member</td>
+                                    <td>2024-12-22</td>
+                                    <td>14:30</td>
+                                    <td><span class="status-badge status-approved">COMPLETED</span></td>
+                                </tr>
+                                <tr>
+                                    <td>002</td>
+                                    <td>Event scheduled</td>
+                                    <td>Event</td>
+                                    <td>2024-12-22</td>
+                                    <td>13:15</td>
+                                    <td><span class="status-badge status-pending">PENDING</span></td>
+                                </tr>
+                                <tr>
+                                    <td>003</td>
+                                    <td>Attendance recorded</td>
+                                    <td>Attendance</td>
+                                    <td>2024-12-21</td>
+                                    <td>16:45</td>
+                                    <td><span class="status-badge status-approved">COMPLETED</span></td>
+                                </tr>
+                                <tr>
+                                    <td>004</td>
+                                    <td>Request submitted</td>
+                                    <td>Request</td>
+                                    <td>2024-12-21</td>
+                                    <td>11:20</td>
+                                    <td><span class="status-badge status-pending">PENDING</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Members Content -->
+                <div class="page-content" id="membersContent">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <div class="filter-container">
+                            <label for="fieldFilter">Field:</label>
+                            <select id="fieldFilter">
+                                <option value="">All Fields</option>
+                                <option value="Chorale">Chorale</option>
+                                <option value="Dance">Dance</option>
+                                <option value="Rondalla">Rondalla</option>
+                                <option value="Live Band">Live Band</option>
+                                <option value="Theater Arts">Theater Arts</option>
+                                <option value="Visual Arts">Visual Arts</option>
+                            </select>
+                        </div>
+                        <!-- Removed "Add Member" button as per requirements -->
+                    </div>
+
+                    <!-- Split layout into table and profile display side by side -->
+                    <div style="display: flex; gap: 20px;">
+                        <!-- Member Table -->
+                        <div style="flex: 1;">
+                            <div class="table-wrapper">
+                                <div class="table-header">Member Directory</div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Field</th>
+                                            <th>Join Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="membersTableBody">
+                                        <tr class="member-row" 
+                                            data-id="M001"
+                                            data-field="Chorale" 
+                                            data-name="John Doe" 
+                                            data-email="john@example.com" 
+                                            data-phone="+1-555-0101"
+                                            data-course="BS Computer Science"
+                                            data-year="3rd Year"
+                                            data-joindate="2024-01-15" 
+                                            data-status="Active">
+                                            <td>M001</td>
+                                            <td>John Doe</td>
+                                            <td>john@example.com</td>
+                                            <td>Chorale</td>
+                                            <td>2024-01-15</td>
+                                            <td><span class="status-badge status-approved">ACTIVE</span></td>
+                                        </tr>
+                                        <tr class="member-row" 
+                                            data-id="M002"
+                                            data-field="Dance" 
+                                            data-name="Jane Smith" 
+                                            data-email="jane@example.com"
+                                            data-phone="+1-555-0102"
+                                            data-course="BS Information Technology"
+                                            data-year="2nd Year"
+                                            data-joindate="2024-02-20" 
+                                            data-status="Active">
+                                            <td>M002</td>
+                                            <td>Jane Smith</td>
+                                            <td>jane@example.com</td>
+                                            <td>Dance</td>
+                                            <td>2024-02-20</td>
+                                            <td><span class="status-badge status-approved">ACTIVE</span></td>
+                                        </tr>
+                                        <tr class="member-row" 
+                                            data-id="M003"
+                                            data-field="Rondalla" 
+                                            data-name="Bob Johnson" 
+                                            data-email="bob@example.com"
+                                            data-phone="+1-555-0103"
+                                            data-course="BS Business Administration"
+                                            data-year="4th Year"
+                                            data-joindate="2024-03-10" 
+                                            data-status="Active">
+                                            <td>M003</td>
+                                            <td>Bob Johnson</td>
+                                            <td>bob@example.com</td>
+                                            <td>Rondalla</td>
+                                            <td>2024-03-10</td>
+                                            <td><span class="status-badge status-approved">ACTIVE</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Member Profile Display Section -->
+                        <div style="flex: 0 0 350px;">
+                            <div class="table-wrapper" id="memberProfileDisplay" style="display: none;">
+                                <div class="table-header">Member Profile</div>
+                                <div style="padding: 20px;">
+                                    <!-- Profile Header with Avatar -->
+                                    <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #000;">
+                                        <div style="width: 80px; height: 80px; background: #000; color: #fff; border: 3px solid #000; display: inline-flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; margin-bottom: 10px;" id="profileDisplayAvatar">
+                                            J
+                                        </div>
+                                        <h3 style="font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 10px 0 5px 0;" id="profileDisplayName">John Doe</h3>
+                                        <p style="font-size: 11px; color: #666; text-transform: uppercase;" id="profileDisplayField">Chorale</p>
+                                    </div>
+
+                                    <!-- Profile Details -->
+                                    <div style="font-size: 12px;">
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ccc;">
+                                            <span style="font-weight: bold; text-transform: uppercase; font-size: 10px;">Member ID:</span>
+                                            <span id="profileDisplayId">M001</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ccc; background: #f5f5f5;">
+                                            <span style="font-weight: bold; text-transform: uppercase; font-size: 10px;">Full Name:</span>
+                                            <span id="profileDisplayFullName">John Doe</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ccc;">
+                                            <span style="font-weight: bold; text-transform: uppercase; font-size: 10px;">Course/Year:</span>
+                                            <span id="profileDisplayCourse">BS CS - 3rd Year</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ccc; background: #f5f5f5;">
+                                            <span style="font-weight: bold; text-transform: uppercase; font-size: 10px;">Field of Arts:</span>
+                                            <span id="profileDisplayFieldDetail">Chorale</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ccc;">
+                                            <span style="font-weight: bold; text-transform: uppercase; font-size: 10px;">Email:</span>
+                                            <span id="profileDisplayEmail" style="word-break: break-all;">john@example.com</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ccc; background: #f5f5f5;">
+                                            <span style="font-weight: bold; text-transform: uppercase; font-size: 10px;">Phone:</span>
+                                            <span id="profileDisplayPhone">+1-555-0101</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ccc;">
+                                            <span style="font-weight: bold; text-transform: uppercase; font-size: 10px;">Status:</span>
+                                            <span id="profileDisplayStatus">
+                                                <span class="status-badge status-approved">ACTIVE</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Events Content -->
+                <div class="page-content" id="eventsContent">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+                        <button class="btn btn-primary" onclick="openAddEventModal()">
+                            <i class="fas fa-plus"></i> Add Event
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <div class="table-header">Event Management</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Location</th>
+                                    <th>Attendees</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTableBody">
+                                <tr data-event-id="1">
+                                    <td>E001</td>
+                                    <td>Team Meeting</td>
+                                    <td>2024-10-20</td>
+                                    <td>Conference Room A</td>
+                                    <td>25</td>
+                                    <td><span class="status-badge status-approved">SCHEDULED</span></td>
+                                    <td>
+                                        <button class="btn btn-sm" onclick="editEvent(1)">Edit</button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteEvent(1)">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr data-event-id="2">
+                                    <td>E002</td>
+                                    <td>Workshop</td>
+                                    <td>2024-10-25</td>
+                                    <td>Main Hall</td>
+                                    <td>50</td>
+                                    <td><span class="status-badge status-approved">SCHEDULED</span></td>
+                                    <td>
+                                        <button class="btn btn-sm" onclick="editEvent(2)">Edit</button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteEvent(2)">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr data-event-id="3">
+                                    <td>E003</td>
+                                    <td>Annual Gala</td>
+                                    <td>2024-11-15</td>
+                                    <td>Grand Ballroom</td>
+                                    <td>150</td>
+                                    <td><span class="status-badge status-pending">PLANNING</span></td>
+                                    <td>
+                                        <button class="btn btn-sm" onclick="editEvent(3)">Edit</button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteEvent(3)">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Accomplishment Content -->
+                <div class="page-content" id="accomplishmentContent">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+                        <button class="btn btn-primary" onclick="alert('Add Accomplishment')">
+                            <i class="fas fa-plus"></i> Add Record
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <div class="table-header">Accomplishment Records</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Field of Arts</th>
+                                    <th>Semester</th>
+                                    <th>Field</th>
+                                    <th>Date</th>
+                                    <th>Files</th>
+                                    <th>Status</th>
+                                    <th>Notes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accomplishmentTableBody">
+                                <tr data-id="1">
+                                    <td>A001</td>
+                                    <td>THEATER</td>
+                                    <td>1st sem SY.2025-2026</td>
+                                    <td>Chorale</td>
+                                    <td>2024-09-15</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="viewFiles(1, 'accomplishment')">
+                                            2 Files
+                                        </button>
+                                    </td>
+                                    <td><span class="status-badge status-pending">PENDING</span></td>
+                                    <td>-</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success" onclick="approveAccomplishment(1)">Approve</button>
+                                        <button class="btn btn-sm btn-danger" onclick="rejectAccomplishment(1)">Reject</button>
+                                    </td>
+                                </tr>
+                                <tr data-id="2">
+                                    <td>A002</td>
+                                    <td>CHORALE</td>
+                                    <td>1st sem SY.2025-2026</td>
+                                    <td>Visual Arts</td>
+                                    <td>2024-08-20</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="viewFiles(2, 'accomplishment')">
+                                            3 Files
+                                        </button>
+                                    </td>
+                                    <td><span class="status-badge status-approved">APPROVED</span></td>
+                                    <td>Great work!</td>
+                                    <td>
+                                        <button class="btn btn-sm" disabled>Approved</button>
+                                    </td>
+                                </tr>
+                                <tr data-id="3">
+                                    <td>A003</td>
+                                    <td>DANCE</td>
+                                    <td>1st sem SY.2025-2026</td>
+                                    <td>Theater Arts</td>
+                                    <td>2024-07-10</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="viewFiles(3, 'accomplishment')">
+                                            1 File
+                                        </button>
+                                    </td>
+                                    <td><span class="status-badge status-rejected">REJECTED</span></td>
+                                    <td>Needs more docs</td>
+                                    <td>
+                                        <button class="btn btn-sm" disabled>Rejected</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Requests Content -->
+                <div class="page-content" id="requestsContent">
+                    <div class="table-wrapper">
+                        <div class="table-header">Request Management</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Member</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Files</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requestsTableBody">
+                                <tr>
+                                    <td>REQ-001</td>
+                                    <td>John Doe</td>
+                                    <td>Leave Request</td>
+                                    <td>2024-10-18</td>
+                                    <td>10:30</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="viewFiles('REQ-001', 'request')">
+                                            2 Files
+                                        </button>
+                                    </td>
+                                    <td><span class="status-badge status-pending">PENDING</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success" onclick="approveRequest('REQ-001')">Approve</button>
+                                        <button class="btn btn-sm btn-danger" onclick="declineRequest('REQ-001')">Decline</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REQ-002</td>
+                                    <td>Jane Smith</td>
+                                    <td>Certificate Request</td>
+                                    <td>2024-10-19</td>
+                                    <td>14:15</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="viewFiles('REQ-002', 'request')">
+                                            1 File
+                                        </button>
+                                    </td>
+                                    <td><span class="status-badge status-approved">APPROVED</span></td>
+                                    <td>
+                                        <button class="btn btn-sm" disabled>Approved</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REQ-003</td>
+                                    <td>Bob Johnson</td>
+                                    <td>Event Participation</td>
+                                    <td>2024-10-17</td>
+                                    <td>09:45</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="viewFiles('REQ-003', 'request')">
+                                            3 Files
+                                        </button>
+                                    </td>
+                                    <td><span class="status-badge status-approved">APPROVED</span></td>
+                                    <td>
+                                        <button class="btn btn-sm" disabled>Approved</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Event Modal -->
+    <div class="modal" id="addEventModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="eventModalTitle">Add New Event</h2>
+                <button class="modal-close" onclick="closeAddEventModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="addEventForm">
+                    <div class="form-group">
+                        <label for="eventName">Event Name *</label>
+                        <input type="text" id="eventName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDate">Date *</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventLocation">Location *</label>
+                        <input type="text" id="eventLocation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventAttendees">Attendees</label>
+                        <input type="number" id="eventAttendees" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventStatus">Field of Arts</label>
+                        <select id="eventStatus" required>
+                            <option value="">Select field</option>
+                            <option value="Chorale">Chorale</option>
+                            <option value="Dance">Dance</option>
+                            <option value="Rondalla">Rondalla</option>
+                            <option value="Live Band">Live Band</option>
+                            <option value="Theater Arts">Theater Arts</option>
+                            <option value="Visual Arts">Visual Arts</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeAddEventModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEvent()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div class="modal" id="addMemberModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Add New Member</h2>
+                <button class="modal-close" onclick="closeAddMemberModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="addMemberForm">
+                    <div class="form-group">
+                        <label for="memberName">Name *</label>
+                        <input type="text" id="memberName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberEmail">Email *</label>
+                        <input type="email" id="memberEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberField">Field of Arts *</label>
+                        <select id="memberField" required>
+                            <option value="">Select field</option>
+                            <option value="Chorale">Chorale</option>
+                            <option value="Dance">Dance</option>
+                            <option value="Rondalla">Rondalla</option>
+                            <option value="Live Band">Live Band</option>
+                            <option value="Theater Arts">Theater Arts</option>
+                            <option value="Visual Arts">Visual Arts</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberJoinDate">Join Date *</label>
+                        <input type="date" id="memberJoinDate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeAddMemberModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveMember()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Profile Modal -->
+    <div class="modal" id="memberProfileModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Member Profile</h2>
+                <button class="modal-close" onclick="closeMemberProfileModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar">J</div>
+                    <div class="profile-info">
+                        <h3 id="profileName">John Doe</h3>
+                        <p id="profileField">Chorale</p>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value" id="profileEmail">john@example.com</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Field:</span>
+                        <span class="detail-value" id="profileFieldDetail">Chorale</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Join Date:</span>
+                        <span class="detail-value" id="profileJoinDate">2024-01-15</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value" id="profileStatus">
+                            <span class="status-badge status-approved">ACTIVE</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeMemberProfileModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Viewer Modal -->
+    <div class="modal" id="fileViewerModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Uploaded Files</h2>
+                <button class="modal-close" onclick="closeFileViewerModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="file-list" id="fileList"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeFileViewerModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let eventsData = {
+            1: { name: 'Team Meeting', date: '2024-10-20', location: 'Conference Room A', attendees: 25, status: 'Scheduled' },
+            2: { name: 'Workshop', date: '2024-10-25', location: 'Main Hall', attendees: 50, status: 'Scheduled' },
+            3: { name: 'Annual Gala', date: '2024-11-15', location: 'Grand Ballroom', attendees: 150, status: 'Planning' }
+        };
+
+        let currentEditingEventId = null;
+
+        const accomplishmentFiles = {
+            1: [
+                { name: 'Award_Certificate.pdf', type: 'pdf', size: '2.4 MB' },
+                { name: 'Project_Report.docx', type: 'docx', size: '1.8 MB' }
+            ],
+            2: [
+                { name: 'Design_Portfolio.pdf', type: 'pdf', size: '5.2 MB' },
+                { name: 'Artwork_Images.zip', type: 'zip', size: '12.5 MB' },
+                { name: 'Design_Brief.docx', type: 'docx', size: '0.9 MB' }
+            ],
+            3: [
+                { name: 'Service_Report.pdf', type: 'pdf', size: '1.1 MB' }
+            ]
+        };
+
+        const requestFiles = {
+            'REQ-001': [
+                { name: 'Leave_Request_Form.pdf', type: 'pdf', size: '0.8 MB' },
+                { name: 'Medical_Certificate.jpg', type: 'jpg', size: '1.2 MB' }
+            ],
+            'REQ-002': [
+                { name: 'Certificate_Request.docx', type: 'docx', size: '0.5 MB' }
+            ],
+            'REQ-003': [
+                { name: 'Event_Participation_Form.pdf', type: 'pdf', size: '1.1 MB' },
+                { name: 'Event_Poster.png', type: 'png', size: '2.3 MB' },
+                { name: 'Participation_Details.xlsx', type: 'xlsx', size: '0.3 MB' }
+            ]
+        };
+
+        function displayMemberProfile(memberRow) {
+            const id = memberRow.getAttribute('data-id');
+            const name = memberRow.getAttribute('data-name');
+            const email = memberRow.getAttribute('data-email');
+            const field = memberRow.getAttribute('data-field');
+            const phone = memberRow.getAttribute('data-phone') || 'N/A';
+            const course = memberRow.getAttribute('data-course') || 'N/A';
+            const year = memberRow.getAttribute('data-year') || '';
+            const joinDate = memberRow.getAttribute('data-joindate');
+            const status = memberRow.getAttribute('data-status');
+
+            // Get initials for avatar
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+
+            // Update profile display
+            document.getElementById('profileDisplayAvatar').textContent = initials;
+            document.getElementById('profileDisplayName').textContent = name;
+            document.getElementById('profileDisplayField').textContent = field;
+            document.getElementById('profileDisplayId').textContent = id;
+            document.getElementById('profileDisplayFullName').textContent = name;
+            document.getElementById('profileDisplayCourse').textContent = course + (year ? ' - ' + year : '');
+            document.getElementById('profileDisplayFieldDetail').textContent = field;
+            document.getElementById('profileDisplayEmail').textContent = email;
+            document.getElementById('profileDisplayPhone').textContent = phone;
+            
+            const statusBadge = document.getElementById('profileDisplayStatus');
+            const statusClass = status.toLowerCase() === 'active' ? 'status-approved' : 'status-rejected';
+            statusBadge.innerHTML = `<span class="status-badge ${statusClass}">${status.toUpperCase()}</span>`;
+
+            // Show profile display
+            document.getElementById('memberProfileDisplay').style.display = 'block';
+        }
+
+        function saveMemberDataToLocalStorage() {
+            const memberRows = document.querySelectorAll('.member-row');
+            const membersData = [];
+            
+            memberRows.forEach(row => {
+                membersData.push({
+                    id: row.getAttribute('data-id'),
+                    name: row.getAttribute('data-name'),
+                    email: row.getAttribute('data-email'),
+                    field: row.getAttribute('data-field'),
+                    phone: row.getAttribute('data-phone'),
+                    course: row.getAttribute('data-course'),
+                    year: row.getAttribute('data-year'),
+                    joinDate: row.getAttribute('data-joindate'),
+                    status: row.getAttribute('data-status')
+                });
+            });
+            
+            localStorage.setItem('upao_members', JSON.stringify(membersData));
+        }
+
+
+        function openMemberProfileModal(memberRow) {
+            const name = memberRow.getAttribute('data-name');
+            const email = memberRow.getAttribute('data-email');
+            const field = memberRow.getAttribute('data-field');
+            const joinDate = memberRow.getAttribute('data-joindate');
+            const status = memberRow.getAttribute('data-status');
+
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = name;
+            document.getElementById('profileField').textContent = field;
+            document.getElementById('profileEmail').textContent = email;
+            document.getElementById('profileFieldDetail').textContent = field;
+            document.getElementById('profileJoinDate').textContent = joinDate;
+            
+            const statusBadge = document.getElementById('profileStatus');
+            statusBadge.innerHTML = `<span class="status-badge status-approved">ACTIVE</span>`;
+
+            document.getElementById('memberProfileModal').classList.add('show');
+        }
+
+        function closeMemberProfileModal() {
+            document.getElementById('memberProfileModal').classList.remove('show');
+        }
+
+        function initializeMemberRowClickHandlers() {
+            const memberRows = document.querySelectorAll('.member-row');
+            memberRows.forEach(row => {
+                row.addEventListener('click', function() {
+                    displayMemberProfile(this);
+                });
+            });
+        }
+
+        function initializeMemberFilter() {
+            const fieldFilter = document.getElementById('fieldFilter');
+            if (fieldFilter) {
+                fieldFilter.addEventListener('change', function() {
+                    const selectedField = this.value;
+                    const memberRows = document.querySelectorAll('.member-row');
+                    
+                    memberRows.forEach(row => {
+                        if (selectedField === '' || row.getAttribute('data-field') === selectedField) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        }
+
+        function initializeNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link[data-page]');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    if (page) switchPage(page);
+                });
+            });
+        }
+
+        function switchPage(page) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            const navLink = document.querySelector(`[data-page="${page}"]`);
+            if (navLink) {
+                navLink.closest('.nav-item').classList.add('active');
+            }
+
+            document.querySelectorAll('.page-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            const pageContent = document.getElementById(`${page}Content`);
+            if (pageContent) {
+                pageContent.classList.add('active');
+            }
+
+            const pageInfo = {
+                dashboard: { title: 'Dashboard', subtitle: 'System Overview' },
+                members: { title: 'Member Directory', subtitle: 'Member Management' },
+                events: { title: 'Events', subtitle: 'Event Management' },
+                accomplishment: { title: 'Accomplishments', subtitle: 'Accomplishment Records' },
+                requests: { title: 'Requests', subtitle: 'Request Management' }
+            };
+
+            const info = pageInfo[page];
+            if (info) {
+                document.getElementById('pageTitle').textContent = info.title;
+                document.getElementById('pageSubtitle').textContent = info.subtitle;
+            }
+
+            if (page === 'members') {
+                initializeMemberFilter();
+                initializeMemberRowClickHandlers();
+            }
+        }
+
+        function openAddEventModal() {
+            currentEditingEventId = null;
+            document.getElementById('eventModalTitle').textContent = 'Add New Event';
+            document.getElementById('addEventForm').reset();
+            document.getElementById('addEventModal').classList.add('show');
+        }
+
+        function closeAddEventModal() {
+            document.getElementById('addEventModal').classList.remove('show');
+        }
+
+        function saveEvent() {
+            const form = document.getElementById('addEventForm');
+            if (!form.checkValidity()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const eventName = document.getElementById('eventName').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const eventLocation = document.getElementById('eventLocation').value;
+            const eventAttendees = document.getElementById('eventAttendees').value || '0';
+            const eventStatus = document.getElementById('eventStatus').value;
+
+            if (currentEditingEventId) {
+                const row = document.querySelector(`tr[data-event-id="${currentEditingEventId}"]`);
+                if (row) {
+                    row.cells[1].textContent = eventName;
+                    row.cells[2].textContent = eventDate;
+                    row.cells[3].textContent = eventLocation;
+                    row.cells[4].textContent = eventAttendees;
+                    alert('Event updated successfully!');
+                }
+            } else {
+                const tableBody = document.getElementById('eventsTableBody');
+                const newId = Object.keys(eventsData).length > 0 ? Math.max(...Object.keys(eventsData).map(Number)) + 1 : 1;
+                
+                eventsData[newId] = { name: eventName, date: eventDate, location: eventLocation, attendees: eventAttendees, status: eventStatus };
+
+                const newRow = document.createElement('tr');
+                newRow.setAttribute('data-event-id', newId);
+                newRow.innerHTML = `
+                    <td>E00${newId}</td>
+                    <td>${eventName}</td>
+                    <td>${eventDate}</td>
+                    <td>${eventLocation}</td>
+                    <td>${eventAttendees}</td>
+                    <td><span class="status-badge status-${eventStatus.toLowerCase() === 'planning' ? 'pending' : 'approved'}">${eventStatus.toUpperCase()}</span></td>
+                    <td>
+                        <button class="btn btn-sm" onclick="editEvent(${newId})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteEvent(${newId})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(newRow);
+                alert('Event added successfully!');
+            }
+
+            closeAddEventModal();
+        }
+
+        function editEvent(eventId) {
+            const event = eventsData[eventId];
+            if (!event) return;
+
+            currentEditingEventId = eventId;
+            document.getElementById('eventModalTitle').textContent = 'Edit Event';
+            document.getElementById('eventName').value = event.name;
+            document.getElementById('eventDate').value = event.date;
+            document.getElementById('eventLocation').value = event.location;
+            document.getElementById('eventAttendees').value = event.attendees;
+            document.getElementById('eventStatus').value = event.status;
+
+            document.getElementById('addEventModal').classList.add('show');
+        }
+
+        function deleteEvent(eventId) {
+            if (confirm('Delete this event?')) {
+                const row = document.querySelector(`tr[data-event-id="${eventId}"]`);
+                if (row) {
+                    row.remove();
+                    delete eventsData[eventId];
+                    alert('Event deleted!');
+                }
+            }
+        }
+
+        function openAddMemberModal() {
+            document.getElementById('addMemberModal').classList.add('show');
+        }
+
+        function closeAddMemberModal() {
+            document.getElementById('addMemberModal').classList.remove('show');
+        }
+
+        function saveMember() {
+            const form = document.getElementById('addMemberForm');
+            if (!form.checkValidity()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const memberName = document.getElementById('memberName').value;
+            const memberEmail = document.getElementById('memberEmail').value;
+            const memberField = document.getElementById('memberField').value;
+            const memberJoinDate = document.getElementById('memberJoinDate').value;
+
+            const tableBody = document.getElementById('membersTableBody');
+            const nextIdNum = tableBody.querySelectorAll('tr').length + 1;
+            const newId = `M00${nextIdNum}`;
+            
+            const newRow = document.createElement('tr');
+            newRow.className = 'member-row';
+            newRow.setAttribute('data-id', newId);
+            newRow.setAttribute('data-field', memberField);
+            newRow.setAttribute('data-name', memberName);
+            newRow.setAttribute('data-email', memberEmail);
+            newRow.setAttribute('data-phone', 'N/A');
+            newRow.setAttribute('data-course', 'N/A');
+            newRow.setAttribute('data-year', 'N/A');
+            newRow.setAttribute('data-joindate', memberJoinDate);
+            newRow.setAttribute('data-status', 'Active');
+            newRow.innerHTML = `
+                <td>${newId}</td>
+                <td>${memberName}</td>
+                <td>${memberEmail}</td>
+                <td>${memberField}</td>
+                <td>${memberJoinDate}</td>
+                <td><span class="status-badge status-approved">ACTIVE</span></td>
+            `;
+            tableBody.appendChild(newRow);
+
+            newRow.addEventListener('click', function() {
+                displayMemberProfile(this);
+            });
+
+            closeAddMemberModal();
+            alert('Member added successfully!');
+            
+            saveMemberDataToLocalStorage();
+        }
+
+        function viewFiles(id, type) {
+            const files = type === 'accomplishment' ? accomplishmentFiles[id] : requestFiles[id];
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+
+            if (!files || files.length === 0) {
+                fileList.innerHTML = '<p style="text-align: center; color: #666;">No files</p>';
+            } else {
+                files.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <div class="file-name">
+                            <i class="fas fa-file"></i>
+                            <span>${file.name} (${file.size})</span>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn btn-sm btn-info" onclick="alert('View: ${file.name}')">View</button>
+                            <button class="btn btn-sm" onclick="alert('Download: ${file.name}')">Download</button>
+                        </div>
+                    `;
+                    fileList.appendChild(fileItem);
+                });
+            }
+
+            document.getElementById('fileViewerModal').classList.add('show');
+        }
+
+        function closeFileViewerModal() {
+            document.getElementById('fileViewerModal').classList.remove('show');
+        }
+
+        function approveAccomplishment(id) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (row) {
+                const notes = prompt('Enter admin notes (optional):');
+                row.querySelector('td:nth-child(7)').innerHTML = '<span class="status-badge status-approved">APPROVED</span>';
+                row.querySelector('td:nth-child(8)').innerHTML = notes || 'Approved';
+                row.querySelector('td:nth-child(9)').innerHTML = '<button class="btn btn-sm" disabled>Approved</button>';
+                alert('Accomplishment approved!');
+            }
+        }
+
+        function rejectAccomplishment(id) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (row) {
+                const notes = prompt('Enter rejection reason:');
+                if (notes) {
+                    row.querySelector('td:nth-child(7)').innerHTML = '<span class="status-badge status-rejected">REJECTED</span>';
+                    row.querySelector('td:nth-child(8)').innerHTML = notes;
+                    row.querySelector('td:nth-child(9)').innerHTML = '<button class="btn btn-sm" disabled>Rejected</button>';
+                    alert('Accomplishment rejected!');
+                }
+            }
+        }
+
+        function approveRequest(requestId) {
+            const row = event.target.closest('tr');
+            row.querySelector('td:nth-child(7)').innerHTML = '<span class="status-badge status-approved">APPROVED</span>';
+            row.querySelector('td:nth-child(8)').innerHTML = '<button class="btn btn-sm" disabled>Approved</button>';
+            alert(`Request ${requestId} approved!`);
+        }
+
+        function declineRequest(requestId) {
+            const row = event.target.closest('tr');
+            row.querySelector('td:nth-child(7)').innerHTML = '<span class="status-badge status-rejected">REJECTED</span>';
+            row.querySelector('td:nth-child(8)').innerHTML = '<button class="btn btn-sm" disabled>Rejected</button>';
+            alert(`Request ${requestId} declined!`);
+        }
+
+        document.getElementById('addEventModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAddEventModal();
+        });
+
+        document.getElementById('addMemberModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAddMemberModal();
+        });
+
+        document.getElementById('memberProfileModal').addEventListener('click', function(e) {
+            if (e.target === this) closeMemberProfileModal();
+        });
+
+        document.getElementById('fileViewerModal').addEventListener('click', function(e) {
+            if (e.target === this) closeFileViewerModal();
+        });
+
+        initializeNavigation();
+        initializeMemberFilter();
+        initializeMemberRowClickHandlers();
+        saveMemberDataToLocalStorage(); // Save initial data to localStorage
+    </script>
+</body>
+</html>

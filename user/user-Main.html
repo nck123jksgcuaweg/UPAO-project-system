@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performing Arts Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #2C1810;
+            --color-secondary: #8B7355;
+            --color-accent: #D4A574;
+            --color-background: #FDFCFB;
+            --color-surface: #FFFFFF;
+            --color-text: #1A1A1A;
+            --color-text-muted: #6B6B6B;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2.5rem;
+            --spacing-xl: 4rem;
+            --radius: 2px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background-color: #f9f7f4;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--color-surface);
+            padding: 1.25rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            background-color: rgba(253, 252, 251, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--spacing-lg);
+            flex-wrap: wrap; /* Added for better responsiveness */
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .logo-mark {
+            width: 3px;
+            height: 28px;
+            background-color: var(--color-accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-lg);
+        }
+
+        .nav-menu a {
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9375rem;
+            transition: color 0.2s ease;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-menu a:hover {
+            color: var(--color-secondary);
+        }
+
+        /* Enhanced search bar with results dropdown */
+        .search-container {
+            position: relative;
+        }
+
+        .search-bar {
+            padding: 0.625rem 1.25rem;
+            background-color: var(--color-background);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 50px;
+            color: var(--color-text);
+            width: 220px;
+            font-size: 0.875rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--color-secondary);
+            width: 280px;
+        }
+
+        .search-bar::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: var(--color-surface);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            margin-top: 0.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            display: none;
+            z-index: 1000;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background-color: var(--color-background);
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .search-result-meta {
+            font-size: 0.8125rem;
+            color: var(--color-text-muted);
+        }
+
+        .search-no-results {
+            padding: var(--spacing-lg);
+            text-align: center;
+            color: var(--color-text-muted);
+        }
+
+        /* Mobile menu hamburger button */
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--color-text);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* Carousel */
+        .carousel-container {
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+            z-index: 1;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-content {
+            position: absolute;
+            bottom: var(--spacing-xl);
+            left: 0;
+            right: 0;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .carousel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: -0.02em;
+        }
+
+        .carousel-subtitle {
+            font-size: 1.125rem;
+            font-weight: 300;
+            opacity: 0.95;
+            letter-spacing: 0.02em;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: var(--spacing-md);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: var(--spacing-xs);
+            z-index: 3;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: white;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* Carousel navigation arrows */
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            cursor: pointer;
+            z-index: 3;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-arrow:hover {
+            background-color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-arrow-left {
+            left: var(--spacing-lg);
+        }
+
+        .carousel-arrow-right {
+            right: var(--spacing-lg);
+        }
+
+        /* Events Section */
+        .events-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-xl) var(--spacing-lg);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--color-text-muted);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Enhanced events grid with filter buttons */
+        .events-filters {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .filter-button {
+            padding: 0.5rem 1.25rem;
+            background-color: var(--color-surface);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            color: var(--color-text);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-button:hover {
+            background-color: var(--color-background);
+            border-color: var(--color-secondary);
+        }
+
+        .filter-button.active {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .event-category {
+            background-color: var(--color-surface);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .event-category:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .event-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+        }
+
+        .event-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .event-category:hover .event-image {
+            transform: scale(1.05);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: var(--spacing-md);
+            left: var(--spacing-md);
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: var(--color-primary);
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+
+        .event-details {
+            padding: var(--spacing-lg);
+        }
+
+        .event-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .event-meta {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            flex-wrap: wrap;
+        }
+
+        .event-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .event-info {
+            color: var(--color-text-muted);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        /* Enhanced event actions */
+        .event-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .event-action-btn {
+            padding: 0.625rem 1.25rem;
+            border: 1px solid var(--color-primary);
+            background-color: transparent;
+            color: var(--color-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .event-action-btn:hover {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .event-action-btn.primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .event-action-btn.primary:hover {
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+        }
+
+        .event-category.no-event {
+            opacity: 0.6;
+        }
+
+        .event-category.no-event:hover {
+            transform: none;
+        }
+
+        /* Hidden event class for filtering */
+        .event-category.hidden {
+            display: none;
+        }
+
+        /* Modal styles for Event Details */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: var(--color-surface);
+            margin: 3% auto;
+            padding: var(--spacing-xl);
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+            border-radius: 16px; /* Added border-radius */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12); /* Added softer shadow */
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            color: var(--color-text-muted);
+            position: absolute;
+            right: var(--spacing-lg);
+            top: var(--spacing-lg);
+            font-size: 2rem;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: var(--color-text);
+        }
+
+        .modal-event-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .modal-event-detail {
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .modal-event-detail:last-child {
+            border-bottom: none;
+        }
+
+        .modal-label {
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-value {
+            color: var(--color-text-muted);
+            font-size: 1rem;
+        }
+
+        /* Add modal action buttons */
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            border: 1px solid var(--color-primary);
+            background-color: var(--color-primary);
+            color: white;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-btn:hover {
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+        }
+
+        .modal-btn.secondary {
+            background-color: transparent;
+            color: var(--color-primary);
+        }
+
+        .modal-btn.secondary:hover {
+            background-color: var(--color-background);
+        }
+
+        /* Calendar Modal */
+        .calendar-modal-content {
+            width: 95%;
+            max-width: 1000px;
+            max-height: 90vh;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .calendar-nav {
+            background: none;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            color: var(--color-text);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            transition: all 0.2s ease;
+            font-weight: 300;
+        }
+
+        .calendar-nav:hover {
+            background-color: var(--color-background);
+            border-color: var(--color-secondary);
+        }
+
+        .calendar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .calendar-day-header {
+            background-color: var(--color-background);
+            padding: var(--spacing-md);
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+        }
+
+        .calendar-day {
+            background-color: var(--color-surface);
+            min-height: 100px;
+            padding: var(--spacing-sm);
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .calendar-day:hover {
+            background-color: var(--color-background);
+        }
+
+        .calendar-day.other-month {
+            background-color: #F9F9F9;
+            color: var(--color-text-muted);
+        }
+
+        .calendar-day.today {
+            background-color: var(--color-accent);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 0.375rem;
+            font-size: 0.9375rem;
+        }
+
+        .day-events {
+            font-size: 0.6875rem;
+            line-height: 1.4;
+        }
+
+        .event-dot {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            margin-right: 0.25rem;
+            margin-bottom: 0.125rem;
+        }
+
+        .event-dot.chorale { background-color: #5B8FA3; }
+        .event-dot.dance { background-color: #C77B6C; }
+        .event-dot.rondalla { background-color: #7BA373; }
+        .event-dot.live-band { background-color: #D4A574; }
+        .event-dot.theater { background-color: #9B7FA3; }
+        .event-dot.visual-arts { background-color: #6FA39B; }
+
+        /* Floating Calendar Icon */
+        .floating-calendar {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: 64px;
+            height: 64px;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(44, 24, 16, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+        }
+
+        .floating-calendar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(44, 24, 16, 0.3);
+            background-color: var(--color-secondary);
+        }
+
+        .floating-calendar svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        /* Loading spinner for async operations */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            right: var(--spacing-lg);
+            background-color: var(--color-primary);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            transform: translateY(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+        
+        /* Added styles for Account dropdown menu */
+        .account-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .account-button {
+            background: none;
+            border: none;
+            color: #2c2c2c;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .account-button:hover {
+            color: #8b6f47;
+        }
+
+        .account-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 1000;
+            margin-top: 0.5rem;
+        }
+
+        .account-dropdown-content.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .account-dropdown-content button {
+            width: 100%;
+            padding: 0.875rem 1.25rem;
+            border: none;
+            background: white;
+            color: #2c2c2c;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .account-dropdown-content button:last-child {
+            border-bottom: none;
+        }
+
+        .account-dropdown-content button:hover {
+            background-color: #f9f7f4;
+            color: #8b6f47;
+            padding-left: 1.5rem;
+        }
+
+        /* Added modal styles for login and registration */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: #2c2c2c;
+            font-weight: 700;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: #888;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-button:hover {
+            background-color: #f0f0f0;
+            color: #2c2c2c;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8b6f47;
+            box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: white;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #8b6f47;
+            box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #8b6f47;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            background-color: #6d5838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            color: #388e3c;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Added user info display in header */
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: rgba(139, 111, 71, 0.1);
+            border-radius: 8px;
+        }
+
+        .user-info.show {
+            display: flex;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #8b6f47;
+        }
+
+        .user-role {
+            font-size: 0.85rem;
+            color: #666;
+            padding: 0.25rem 0.75rem;
+            background-color: white;
+            border-radius: 12px;
+        }
+
+        .logout-button {
+            background: none;
+            border: 1px solid #8b6f47;
+            color: #8b6f47;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #8b6f47;
+            color: white;
+        }
+
+        /* Added About Us section styles */
+        .about-section {
+            padding: 5rem 2rem;
+            background-color: white;
+            border-top: 1px solid #e8e5e1;
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .about-subtitle {
+            font-size: 1.125rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .about-card {
+            padding: 2rem;
+            background-color: #f9f7f4;
+            border-radius: 12px;
+            border-left: 4px solid #8b6f47;
+        }
+
+        .about-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .about-card-text {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #8b6f47 0%, #6d5838 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+            box-shadow: 0 8px 24px rgba(139, 111, 71, 0.2);
+        }
+
+        .important-notice-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .important-notice-text {
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            /* Improved tablet responsiveness */
+            .nav-container {
+                flex-wrap: wrap;
+                gap: var(--spacing-md);
+            }
+
+            .mobile-menu-button {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                padding: var(--spacing-md) 0;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .search-container {
+                order: 3;
+                width: 100%;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .search-bar:focus {
+                width: 100%;
+            }
+
+            .search-results {
+                width: 100%;
+            }
+
+            .carousel-container {
+                height: 450px;
+            }
+
+            .carousel-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Enhanced mobile optimization */
+            .nav-container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .carousel-container {
+                height: 350px;
+            }
+
+            .carousel-title {
+                font-size: 2rem;
+            }
+
+            .carousel-subtitle {
+                font-size: 1rem;
+            }
+
+            .carousel-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.25rem;
+            }
+
+            .carousel-arrow-left {
+                left: var(--spacing-sm);
+            }
+
+            .carousel-arrow-right {
+                right: var(--spacing-sm);
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .events-section {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+
+            .event-image-wrapper {
+                height: 200px;
+            }
+
+            .calendar-day {
+                min-height: 70px;
+                padding: 0.5rem;
+            }
+
+            .day-events {
+                font-size: 0.625rem;
+            }
+
+            /* Enhanced responsive styles */
+            .modal-content {
+                padding: 2rem 1.5rem;
+                width: 95%;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+
+            .about-title {
+                font-size: 2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-calendar {
+                width: 56px;
+                height: 56px;
+                bottom: var(--spacing-md);
+                right: var(--spacing-md);
+            }
+
+            .floating-calendar svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .toast {
+                right: var(--spacing-md);
+                left: var(--spacing-md);
+                bottom: 80px;
+            }
+        }
+
+        /* Print styles for promotional materials */
+        @media print {
+            .header, .floating-calendar, .modal, .carousel-dots, .carousel-arrow, .account-dropdown, .user-info {
+                display: none !important;
+            }
+
+            .carousel-container {
+                height: 300px;
+                page-break-after: always;
+            }
+
+            .event-category {
+                page-break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #000 !important;
+            }
+
+            body {
+                background-color: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo-section">
+                <div class="logo-mark"></div>
+                <div class="logo-text">University Performing Arts Organization</div>
+            </div>
+            <!-- Added mobile menu button -->
+            <button class="mobile-menu-button" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <!-- Converted Account link to dropdown button -->
+                    <li class="account-dropdown">
+                        <button class="account-button" onclick="toggleAccountMenu()">
+                            Account
+                            <span>▼</span>
+                        </button>
+                        <div class="account-dropdown-content" id="accountDropdown">
+                            <button onclick="openLoginModal('member')">Login as Member</button>
+                            <button onclick="openLoginModal('user')">Login as User</button>
+                            <button onclick="openCreateAccountModal()">Create Account</button>
+                        </div>
+                    </li>
+                    <li><a href="#about">About Us</a></li>
+                </ul>
+            </nav>
+            <!-- Added user info display -->
+            <div class="user-info" id="userInfo">
+                <span class="user-name" id="userName"></span>
+                <span class="user-role" id="userRole"></span>
+                <button class="logout-button" onclick="logout()">Logout</button>
+            </div>
+            <!-- Enhanced search with dropdown results -->
+            <div class="search-container">
+                <input type="text" class="search-bar" id="searchBar" placeholder="Search events..." oninput="handleSearch(this.value)">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Carousel -->
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            <div class="carousel-slide">
+                <img src="/image1.jpg" alt="Theater Performance">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">Experience the Arts</h1>
+                    <p class="carousel-subtitle">Discover world-class performances and cultural events</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="/image2.jpg" alt="Orchestra Performance">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">Musical Excellence</h1>
+                    <p class="carousel-subtitle">From classical to contemporary, celebrate the power of music</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="/image3.jpg" alt="Dance Performance">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">Movement & Expression</h1>
+                    <p class="carousel-subtitle">Where artistry meets innovation in dance</p>
+                </div>
+            </div>
+        </div>
+        <!-- Added navigation arrows for better carousel control -->
+        <button class="carousel-arrow carousel-arrow-left" onclick="prevSlide()" aria-label="Previous slide">‹</button>
+        <button class="carousel-arrow carousel-arrow-right" onclick="nextSlide()" aria-label="Next slide">›</button>
+        <div class="carousel-dots">
+            <span class="dot active" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+    </div>
+
+    <!-- Events Section -->
+    <section class="events-section" id="events">
+        <div class="section-header">
+            <h2 class="section-title">Upcoming Events</h2>
+            <p class="section-subtitle">Immerse yourself in a diverse array of performances and exhibitions throughout the season</p>
+        </div>
+        <!-- Added event category filters -->
+        <div class="events-filters">
+            <button class="filter-button active" data-filter="all" onclick="filterEvents('all')">All Events</button>
+            <button class="filter-button" data-filter="chorale" onclick="filterEvents('chorale')">Chorale</button>
+            <button class="filter-button" data-filter="dance" onclick="filterEvents('dance')">Dance</button>
+            <button class="filter-button" data-filter="rondalla" onclick="filterEvents('rondalla')">Rondalla</button>
+            <button class="filter-button" data-filter="live-band" onclick="filterEvents('live-band')">Live Band</button>
+            <button class="filter-button" data-filter="theater" onclick="filterEvents('theater')">Theater</button>
+            <button class="filter-button" data-filter="visual-arts" onclick="filterEvents('visual-arts')">Visual Arts</button>
+        </div>
+        <div class="events-grid">
+            <!-- Chorale -->
+            <div class="event-category" onclick="openEventModal('chorale')">
+                <div class="event-image-wrapper">
+                    <div class="category-badge">Chorale</div>
+                    <img src="/image4.jpg" alt="Chorale" class="event-image">
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Winter Chorale Concert</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 December 15, 2024</span>
+                        <span class="event-meta-item">⏰ 7:00 PM</span>
+                    </div>
+                    <p class="event-info">
+                        A beautiful evening of choral music featuring classical and contemporary pieces performed by our award-winning ensemble.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dance -->
+            <div class="event-category" onclick="openEventModal('dance')">
+                <div class="event-image-wrapper">
+                    <div class="category-badge">Dance</div>
+                    <img src="/image5.jpg" alt="Dance" class="event-image">
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Contemporary Dance Showcase</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 December 20, 2024</span>
+                        <span class="event-meta-item">⏰ 6:30 PM</span>
+                    </div>
+                    <p class="event-info">
+                        Experience the grace and power of contemporary and classical dance through captivating student performances.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Rondalla -->
+            <div class="event-category" onclick="openEventModal('rondalla')">
+                <div class="event-image-wrapper">
+                    <div class="category-badge">Rondalla</div>
+                    <img src="/image6.jpg" alt="Rondalla" class="event-image">
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Rondalla Evening</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 December 22, 2024</span>
+                        <span class="event-meta-item">⏰ 7:30 PM</span>
+                    </div>
+                    <p class="event-info">
+                        Celebrate Filipino heritage through traditional music performed by our renowned rondalla ensemble.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Live Band -->
+            <div class="event-category" onclick="openEventModal('live-band')">
+                <div class="event-image-wrapper">
+                    <div class="category-badge">Live Band</div>
+                    <img src="/image7.jpg" alt="Live Band" class="event-image">
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Rock Under the Stars</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 December 28, 2024</span>
+                        <span class="event-meta-item">⏰ 8:00 PM</span>
+                    </div>
+                    <p class="event-info">
+                        High-energy performances featuring local and touring bands in an unforgettable outdoor setting.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Theater -->
+            <div class="event-category" onclick="openEventModal('theater')">
+                <div class="event-image-wrapper">
+                    <div class="category-badge">Theater</div>
+                    <img src="/image8.jpg" alt="Theater" class="event-image">
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Shakespeare Festival</h3>
+                    <div class="event-meta">
+                        <span class="event-meta-item">📅 January 5, 2025</span>
+                        <span class="event-meta-item">⏰ 7:00 PM</span>
+                    </div>
+                    <p class="event-info">
+                        Timeless tales reimagined with modern sensibility by our acclaimed drama company.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Visual Arts -->
+            <div class="event-category no-event" onclick="openEventModal('visual-arts')">
+                <div class="event-image-wrapper">
+                    <div class="category-badge">Visual Arts</div>
+                    <img src="/image9.jpg" alt="Visual Arts" class="event-image">
+                </div>
+                <div class="event-details">
+                    <h3 class="event-title">Art Exhibition</h3>
+                    <p class="event-info">
+                        No upcoming events at this time. Check back soon for future exhibitions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Detail Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('eventModal')">&times;</span>
+            <div id="eventModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Calendar Modal -->
+    <div id="calendarModal" class="modal">
+        <div class="modal-content calendar-modal-content">
+            <span class="close" onclick="closeModal('calendarModal')">&times;</span>
+            <div class="calendar-header">
+                <button class="calendar-nav" onclick="changeMonth(-1)">←</button>
+                <div class="calendar-title" id="calendarTitle"></div>
+                <button class="calendar-nav" onclick="changeMonth(1)">→</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+    </div>
+
+    <!-- Added Login Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="loginModalTitle">Login</h2>
+                <button class="close-button" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" for="loginEmail">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" required>
+                </div>
+                <div class="error-message" id="loginError"></div>
+                <button type="submit" class="submit-button">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Added Create Account Modal -->
+    <div id="createAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Account</h2>
+                <button class="close-button" onclick="closeCreateAccountModal()">&times;</button>
+            </div>
+            <form id="createAccountForm" onsubmit="handleCreateAccount(event)">
+                <div class="form-group">
+                    <label class="form-label" for="createName">Full Name</label>
+                    <input type="text" class="form-input" id="createName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="createEmail">Email</label>
+                    <input type="email" class="form-input" id="createEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="createPassword">Password</label>
+                    <input type="password" class="form-input" id="createPassword" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="createRole">Account Type</label>
+                    <select class="form-select" id="createRole" required onchange="handleRoleChange()">
+                        <option value="">Select account type</option>
+                        <option value="user">User</option>
+                        <option value="member">Member (Requires Verification)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="memberCodeGroup" style="display: none;">
+                    <label class="form-label" for="memberCode">Member Verification Code</label>
+                    <input type="text" class="form-input" id="memberCode" placeholder="Enter your member code">
+                    <small style="color: #666; font-size: 0.875rem;">Required for Member registration</small>
+                </div>
+                <div class="error-message" id="createError"></div>
+                <div class="success-message" id="createSuccess"></div>
+                <button type="submit" class="submit-button">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Added About Us Section -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="about-header">
+                <h2 class="about-title">About Us</h2>
+                <p class="about-subtitle">
+                    For over five decades, the Performing Arts Center has been a beacon of cultural excellence,
+                    bringing world-class performances and transformative artistic experiences to our community.
+                </p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-card">
+                    <h3 class="about-card-title">Our Mission</h3>
+                    <p class="about-card-text">
+                        We are dedicated to enriching lives through the arts by presenting exceptional performances,
+                        fostering artistic excellence, and providing access to transformative cultural experiences for all members of our community.
+                    </p>
+                </div>
+
+                <div class="about-card">
+                    <h3 class="about-card-title">Our Venue</h3>
+                    <p class="about-card-text">
+                        Our state-of-the-art facility features a 2,500-seat main theater with world-class acoustics,
+                        an intimate 300-seat studio theater, and versatile gallery spaces designed to showcase the finest in performing and visual arts.
+                    </p>
+                </div>
+
+                <div class="about-card">
+                    <h3 class="about-card-title">Community Impact</h3>
+                    <p class="about-card-text">
+                        Each year, we welcome over 150,000 visitors and provide educational programs reaching 25,000 students.
+                        We believe the arts have the power to inspire, educate, and unite people across all backgrounds.
+                    </p>
+                </div>
+            </div>
+
+            <div class="important-notice">
+                <h3 class="important-notice-title">Important Information for Members & Visitors</h3>
+                <p class="important-notice-text">
+                    <strong>Member Benefits:</strong> As a valued member, you enjoy priority seating, exclusive pre-sale access,
+                    complimentary ticket exchanges, and invitations to special events and artist receptions. Members also receive
+                    20% off concessions and access to the Members-Only Lounge.
+                    <br><br>
+                    <strong>Health & Safety:</strong> Your safety is our priority. All visitors must comply with our health and safety protocols.
+                    Please arrive 30 minutes before showtime for security screening. Outside food and beverages are not permitted.
+                    <br><br>
+                    <strong>Accessibility:</strong> We are committed to providing an inclusive experience for all guests.
+                    Wheelchair-accessible seating, assistive listening devices, and audio description services are available.
+                    Please contact our box office 48 hours in advance to arrange accommodations.
+                    <br><br>
+                    <strong>Photography & Recording:</strong> Photography, video recording, and audio recording are strictly prohibited
+                    during performances to respect the artists and fellow audience members.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Calendar Icon -->
+    <div class="floating-calendar" onclick="openCalendar()" aria-label="Open calendar">
+        <svg viewBox="0 0 24 24">
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+        </svg>
+    </div>
+
+    <!-- Added loading spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Added toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.dot');
+        let carouselInterval;
+        let isCarouselPaused = false;
+
+        function showSlide(index) {
+            const carousel = document.getElementById('carousel');
+            currentSlideIndex = (index + slides.length) % slides.length;
+            carousel.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlideIndex].classList.add('active');
+        }
+
+        function currentSlide(index) {
+            showSlide(index - 1);
+            resetCarouselInterval();
+        }
+
+        function nextSlide() {
+            showSlide(currentSlideIndex + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlideIndex - 1);
+        }
+
+        function resetCarouselInterval() {
+            clearInterval(carouselInterval);
+            if (!isCarouselPaused) {
+                carouselInterval = setInterval(nextSlide, 5000);
+            }
+        }
+
+        // Pause carousel on hover
+        document.querySelector('.carousel-container').addEventListener('mouseenter', () => {
+            isCarouselPaused = true;
+            clearInterval(carouselInterval);
+        });
+
+        document.querySelector('.carousel-container').addEventListener('mouseleave', () => {
+            isCarouselPaused = false;
+            resetCarouselInterval();
+        });
+
+        // Start carousel
+        carouselInterval = setInterval(nextSlide, 5000);
+
+        // Keyboard navigation for carousel
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'ArrowRight') nextSlide();
+        });
+
+        // Event data
+        const events = {
+            'chorale': {
+                title: 'Winter Chorale Concert',
+                date: 'December 15, 2024',
+                time: '7:00 PM',
+                venue: 'Main Auditorium',
+                duration: '2 hours',
+                tickets: '$15 - $25',
+                description: 'A beautiful evening of choral music featuring classical and contemporary pieces performed by our award-winning chorale ensemble. Experience the harmony and emotion of vocal artistry.',
+                contact: 'info@performingarts.com | (555) 123-4567',
+                category: 'chorale'
+            },
+            'dance': {
+                title: 'Contemporary Dance Showcase',
+                date: 'December 20, 2024',
+                time: '6:30 PM',
+                venue: 'Studio Theater',
+                duration: '1.5 hours',
+                tickets: '$12 - $20',
+                description: 'Contemporary and classical dance performances by our talented students, showcasing months of dedication, grace, and artistic expression.',
+                contact: 'dance@performingarts.com | (555) 123-4568',
+                category: 'dance'
+            },
+            'rondalla': {
+                title: 'Rondalla Evening',
+                date: 'December 22, 2024',
+                time: '7:30 PM',
+                venue: 'Cultural Center',
+                duration: '2 hours',
+                tickets: '$18 - $30',
+                description: 'Traditional Filipino music performed by our rondalla ensemble, featuring mandolins, guitars, and string instruments in a celebration of cultural heritage.',
+                contact: 'rondalla@performingarts.com | (555) 123-4569',
+                category: 'rondalla'
+            },
+            'live-band': {
+                title: 'Rock Under the Stars',
+                date: 'December 28, 2024',
+                time: '8:00 PM',
+                venue: 'Outdoor Amphitheater',
+                duration: '3 hours',
+                tickets: '$25 - $45',
+                description: 'High-energy rock performances by local and visiting bands, featuring both original compositions and beloved classics under the night sky.',
+                contact: 'concerts@performingarts.com | (555) 123-4570',
+                category: 'live-band'
+            },
+            'theater': {
+                title: 'Shakespeare Festival',
+                date: 'January 5, 2025',
+                time: '7:00 PM',
+                venue: 'Main Theater',
+                duration: '2.5 hours',
+                tickets: '$20 - $35',
+                description: 'Classic Shakespearean plays performed by our drama company, bringing timeless stories to life with modern interpretations and compelling performances.',
+                contact: 'theater@performingarts.com | (555) 123-4571',
+                category: 'theater'
+            },
+            'visual-arts': {
+                title: 'Visual Arts Exhibition',
+                date: 'Coming Soon',
+                time: 'TBA',
+                venue: 'Art Gallery',
+                duration: 'Ongoing',
+                tickets: 'Free Admission',
+                description: 'There are no upcoming visual arts exhibitions at this time. Please check back soon for announcements about future shows.',
+                contact: 'gallery@performingarts.com | (555) 123-4572',
+                category: 'visual-arts'
+            }
+        };
+
+        let searchTimeout;
+        function handleSearch(query) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchResults = document.getElementById('searchResults');
+                
+                if (query.length < 2) {
+                    searchResults.classList.remove('active');
+                    return;
+                }
+
+                const results = Object.entries(events).filter(([key, event]) => {
+                    return event.title.toLowerCase().includes(query.toLowerCase()) ||
+                           event.description.toLowerCase().includes(query.toLowerCase()) ||
+                           event.category.toLowerCase().includes(query.toLowerCase()) ||
+                           event.venue.toLowerCase().includes(query.toLowerCase());
+                });
+
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<div class="search-no-results">No events found</div>';
+                } else {
+                    searchResults.innerHTML = results.map(([key, event]) => `
+                        <div class="search-result-item" onclick="openEventModal('${key}'); closeSearchResults();">
+                            <div class="search-result-title">${event.title}</div>
+                            <div class="search-result-meta">${event.date} • ${event.venue}</div>
+                        </div>
+                    `).join('');
+                }
+
+                searchResults.classList.add('active');
+            }, 300);
+        }
+
+        function closeSearchResults() {
+            document.getElementById('searchResults').classList.remove('active');
+            document.getElementById('searchBar').value = '';
+        }
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                closeSearchResults();
+            }
+        });
+
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        let currentFilter = 'all';
+        function filterEvents(category) {
+            currentFilter = category;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === category) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Filter event cards
+            document.querySelectorAll('.event-category').forEach(card => {
+                if (category === 'all') {
+                    card.classList.remove('hidden');
+                } else {
+                    const cardCategory = card.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    if (cardCategory === category) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Show toast notification
+            showToast(`Showing ${category === 'all' ? 'all' : category} events`);
+        }
+
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        function openEventModal(eventType) {
+            const event = events[eventType];
+            const modal = document.getElementById('eventModal');
+            const content = document.getElementById('eventModalContent');
+            
+            content.innerHTML = `
+                <h2 class="modal-event-title">${event.title}</h2>
+                <div class="modal-event-detail">
+                    <div class="modal-label">Date</div>
+                    <div class="modal-value">${event.date}</div>
+                </div>
+                <div class="modal-event-detail">
+                    <div class="modal-label">Time</div>
+                    <div class="modal-value">${event.time}</div>
+                </div>
+                <div class="modal-event-detail">
+                    <div class="modal-label">Venue</div>
+                    <div class="modal-value">${event.venue}</div>
+                </div>
+                <div class="modal-event-detail">
+                    <div class="modal-label">Duration</div>
+                    <div class="modal-value">${event.duration}</div>
+                </div>
+                <div class="modal-event-detail">
+                    <div class="modal-label">Tickets</div>
+                    <div class="modal-value">${event.tickets}</div>
+                </div>
+                <div class="modal-event-detail">
+                    <div class="modal-label">Description</div>
+                    <div class="modal-value">${event.description}</div>
+                </div>
+                <div class="modal-event-detail">
+                    <div class="modal-label">Contact</div>
+                    <div class="modal-value">${event.contact}</div>
+                </div>
+                ${event.date !== 'Coming Soon' ? `
+                <div class="modal-actions">
+                    <button class="modal-btn" onclick="bookTicket('${eventType}')">Book Tickets</button>
+                    <button class="modal-btn secondary" onclick="shareEvent('${eventType}')">Share Event</button>
+                </div>
+                ` : ''}
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function bookTicket(eventType) {
+            const event = events[eventType];
+            showToast(`Redirecting to ticket booking for ${event.title}...`);
+            // In production, this would redirect to actual booking system
+            setTimeout(() => {
+                showToast('Ticket booking system would open here');
+            }, 2000);
+        }
+
+        function shareEvent(eventType) {
+            const event = events[eventType];
+            if (navigator.share) {
+                navigator.share({
+                    title: event.title,
+                    text: event.description,
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const url = window.location.href + '#' + eventType;
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('Event link copied to clipboard!');
+                });
+            }
+        }
+
+        // Calendar data
+        const calendarEvents = {
+            '2024-12-15': [{ title: 'Chorale Concert', category: 'chorale', key: 'chorale' }],
+            '2024-12-20': [{ title: 'Dance Recital', category: 'dance', key: 'dance' }],
+            '2024-12-22': [{ title: 'Rondalla Concert', category: 'rondalla', key: 'rondalla' }],
+            '2024-12-28': [{ title: 'Rock Concert', category: 'live-band', key: 'live-band' }],
+            '2025-01-05': [{ title: 'Shakespeare Festival', category: 'theater', key: 'theater' }]
+        };
+
+        let currentDate = new Date();
+
+        function openCalendar() {
+            currentDate = new Date();
+            renderCalendar();
+            document.getElementById('calendarModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            // Clear event modal content to prevent residual data
+            if (modalId === 'eventModal') {
+                document.getElementById('eventModalContent').innerHTML = '';
+            }
+        }
+
+        function changeMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            document.getElementById('calendarTitle').textContent = `${monthNames[month]} ${year}`;
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startingDayOfWeek = firstDay.getDay();
+            const daysInMonth = lastDay.getDate();
+            
+            const prevLastDay = new Date(year, month, 0);
+            const prevDaysInMonth = prevLastDay.getDate();
+            
+            let calendarHTML = '';
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            dayNames.forEach(day => {
+                calendarHTML += `<div class="calendar-day-header">${day}</div>`;
+            });
+            
+            for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+                const day = prevDaysInMonth - i;
+                calendarHTML += `<div class="calendar-day other-month"><div class="day-number">${day}</div></div>`;
+            }
+            
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
+                
+                let dayClass = 'calendar-day';
+                if (isToday) dayClass += ' today';
+                
+                let eventsHTML = '';
+                let dayEvents = calendarEvents[dateString];
+                if (dayEvents) {
+                    dayEvents.forEach(event => {
+                        eventsHTML += `<div onclick="event.stopPropagation(); openEventModal('${event.key}'); closeModal('calendarModal');"><span class="event-dot ${event.category}"></span>${event.title}</div>`;
+                    });
+                }
+                
+                calendarHTML += `
+                    <div class="${dayClass}">
+                        <div class="day-number">${day}</div>
+                        <div class="day-events">${eventsHTML}</div>
+                    </div>
+                `;
+            }
+            
+            const totalCells = startingDayOfWeek + daysInMonth;
+            const remainingCells = 7 - (totalCells % 7);
+            if (remainingCells < 7) {
+                for (let i = 1; i <= remainingCells; i++) {
+                    calendarHTML += `<div class="calendar-day other-month"><div class="day-number">${i}</div></div>`;
+                }
+            }
+            
+            document.getElementById('calendarGrid').innerHTML = calendarHTML;
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const eventModal = document.getElementById('eventModal');
+            const calendarModal = document.getElementById('calendarModal');
+            
+            if (event.target === eventModal) {
+                closeModal('eventModal');
+            }
+            if (event.target === calendarModal) {
+                closeModal('calendarModal');
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal('eventModal');
+                closeModal('calendarModal');
+                closeSearchResults();
+                closeLoginModal();
+                closeCreateAccountModal();
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                // Close mobile menu if open
+                document.getElementById('navMenu').classList.remove('active');
+            });
+        });
+
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        // Use dataset for lazy loading if applicable
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                        }
+                        imageObserver.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '0px 0px 100px 0px' }); // Load images when they are 100px from viewport
+
+            document.querySelectorAll('img[loading="lazy"]').forEach(img => imageObserver.observe(img));
+            // Also observe images without lazy attribute if needed, but be mindful of performance
+            document.querySelectorAll('img:not([loading="lazy"])').forEach(img => {
+                if (img.src && !img.src.includes('/placeholder.svg')) { // Avoid observing placeholder images if they are used initially
+                    imageObserver.observe(img);
+                }
+            });
+        }
+
+        let currentLoginRole = null;
+
+        // Initialize demo accounts in localStorage
+        function initializeDemoAccounts() {
+            if (!localStorage.getItem('members')) {
+                const members = [
+                    { id: 1, name: 'John Doe', email: 'member@example.com', password: 'member123', role: 'member' },
+                    { id: 2, name: 'Jane Smith', email: 'jane@example.com', password: 'member456', role: 'member' }
+                ];
+                localStorage.setItem('members', JSON.stringify(members));
+            }
+            
+            if (!localStorage.getItem('users')) {
+                const users = [
+                    { id: 1, name: 'Bob Wilson', email: 'user@example.com', password: 'user123', role: 'user' },
+                    { id: 2, name: 'Alice Brown', email: 'alice@example.com', password: 'user456', role: 'user' }
+                ];
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
+        // Check if user is already logged in on page load
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                updateUIForLoggedInUser(currentUser);
+            }
+        }
+
+        function toggleAccountMenu() {
+            const dropdown = document.getElementById('accountDropdown');
+            dropdown.classList.toggle('show');
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function closeDropdown(e) {
+                if (!e.target.closest('.account-dropdown')) {
+                    dropdown.classList.remove('show');
+                    document.removeEventListener('click', closeDropdown);
+                }
+            });
+        }
+
+        function openLoginModal(role) {
+            currentLoginRole = role;
+            const modal = document.getElementById('loginModal');
+            const title = document.getElementById('loginModalTitle');
+            title.textContent = `Login as ${role.charAt(0).toUpperCase() + role.slice(1)}`;
+            modal.classList.add('show');
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').classList.remove('show');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+            currentLoginRole = null;
+        }
+
+        function openCreateAccountModal() {
+            const modal = document.getElementById('createAccountModal');
+            modal.classList.add('show');
+            document.getElementById('createAccountForm').reset();
+            document.getElementById('createError').classList.remove('show');
+            document.getElementById('createSuccess').classList.remove('show');
+            document.getElementById('memberCodeGroup').style.display = 'none';
+        }
+
+        function closeCreateAccountModal() {
+            document.getElementById('createAccountModal').classList.remove('show');
+        }
+
+        function handleRoleChange() {
+            const role = document.getElementById('createRole').value;
+            const memberCodeGroup = document.getElementById('memberCodeGroup');
+            
+            if (role === 'member') {
+                memberCodeGroup.style.display = 'block';
+                document.getElementById('memberCode').required = true;
+            } else {
+                memberCodeGroup.style.display = 'none';
+                document.getElementById('memberCode').required = false;
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            // Get the appropriate user database
+            const database = currentLoginRole === 'member' ? 'members' : 'users';
+            const users = JSON.parse(localStorage.getItem(database)) || [];
+            
+            // Validate credentials
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Successful login
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                updateUIForLoggedInUser(user);
+                closeLoginModal();
+                showToast(`Welcome back, ${user.name}!`, 'success');
+            } else {
+                // Failed login
+                errorDiv.textContent = 'Invalid email or password. Please try again.';
+                errorDiv.classList.add('show');
+            }
+        }
+
+        function handleCreateAccount(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('createName').value;
+            const email = document.getElementById('createEmail').value;
+            const password = document.getElementById('createPassword').value;
+            const role = document.getElementById('createRole').value;
+            const memberCode = document.getElementById('memberCode').value;
+            
+            const errorDiv = document.getElementById('createError');
+            const successDiv = document.getElementById('createSuccess');
+            
+            errorDiv.classList.remove('show');
+            successDiv.classList.remove('show');
+            
+            // Validate member code if member role is selected
+            if (role === 'member') {
+                // Demo member codes: MEMBER2024, VIP2024
+                const validMemberCodes = ['MEMBER2024', 'VIP2024'];
+                if (!validMemberCodes.includes(memberCode.toUpperCase())) {
+                    errorDiv.textContent = 'Invalid member verification code. Please contact administration for a valid code.';
+                    errorDiv.classList.add('show');
+                    return;
+                }
+            }
+            
+            // Check if email already exists
+            const members = JSON.parse(localStorage.getItem('members')) || [];
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const allUsers = [...members, ...users];
+            
+            if (allUsers.some(u => u.email === email)) {
+                errorDiv.textContent = 'An account with this email already exists.';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            // Create new account
+            const database = role === 'member' ? 'members' : 'users';
+            const existingUsers = JSON.parse(localStorage.getItem(database)) || [];
+            const newUser = {
+                id: existingUsers.length + 1,
+                name,
+                email,
+                password,
+                role
+            };
+            
+            existingUsers.push(newUser);
+            localStorage.setItem(database, JSON.stringify(existingUsers));
+            
+            successDiv.textContent = `Account created successfully! You can now login as ${role}.`;
+            successDiv.classList.add('show');
+            
+            // Reset form after 2 seconds and close modal
+            setTimeout(() => {
+                closeCreateAccountModal();
+                showToast('Account created! Please login.', 'success');
+            }, 2000);
+        }
+
+        function updateUIForLoggedInUser(user) {
+            // Hide account dropdown
+            const accountDropdown = document.querySelector('.account-dropdown');
+            if (accountDropdown) {
+                accountDropdown.style.display = 'none';
+            }
+            
+            // Show user info
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+            const userRole = document.getElementById('userRole');
+            
+            userName.textContent = user.name;
+            userRole.textContent = user.role.toUpperCase();
+            userInfo.classList.add('show');
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            
+            // Show account dropdown again
+            const accountDropdown = document.querySelector('.account-dropdown');
+            if (accountDropdown) {
+                accountDropdown.style.display = 'inline-block';
+            }
+            
+            // Hide user info
+            const userInfo = document.getElementById('userInfo');
+            userInfo.classList.remove('show');
+            
+            showToast('Logged out successfully', 'success');
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const createModal = document.getElementById('createAccountModal');
+            const accountDropdown = document.getElementById('accountDropdown');
+
+            if (event.target === loginModal) {
+                closeLoginModal();
+            }
+            if (event.target === createModal) {
+                closeCreateAccountModal();
+            }
+            if (!event.target.matches('.account-button') && !event.target.matches('.account-dropdown-content *')) {
+                if(accountDropdown && accountDropdown.classList.contains('show')) {
+                    accountDropdown.classList.remove('show');
+                }
+            }
+        };
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDemoAccounts();
+            checkAuthStatus();
+            // Initial carousel setup
+            showSlide(currentSlideIndex);
+        });
+    </script>
+</body>
+</html>

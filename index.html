@@ -3,119 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <link rel="stylesheet" href="../styles.css">
-    <title>UPAO - Cultural Arts Group</title>
-    
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="logo-container">
-                <div class="logo">UPAO</div>
-                <h1>UPAO</h1>
-            </div>
-            <p>Cultural Arts Group Membership</p>
-            <div class="objective">
-                <strong>Objective:</strong>
-                To develop and promote cultural arts excellence among students through creative expression, skill development, and community engagement in music, dance, theater, literary arts, and visual arts.
-            </div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab active" onclick="showForm('login')">LOGIN</button>
-            <button class="tab" onclick="showForm('register')">REGISTER</button>
-        </div>
-
-        <div id="login-form" class="form-content active">
-            <form onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label for="login-id">Student ID or Email</label>
-                    <input type="text" id="login-id" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" required>
-                </div>
-                <button type="submit" class="btn">LOGIN</button>
-            </form>
-            <div id="login-message" class="message"></div>
-        </div>
-
-        <div id="register-form" class="form-content">
-            <form id="registrationForm" onsubmit="handleRegister(event)">
-                <div class="section-title">MEMBERSHIP CLASSIFICATION</div>
-                
-                <div class="form-group">
-                    <label>Art Category:</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" name="artCategory" value="Music"> Music</label>
-                        <label><input type="checkbox" name="artCategory" value="Dance"> Dance</label>
-                        <label><input type="checkbox" name="artCategory" value="Theater"> Theater</label>
-                        <label><input type="checkbox" name="artCategory" value="Literary"> Literary</label>
-                        <label><input type="checkbox" name="artCategory" value="Visual Arts"> Visual Arts</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="specify">Specify:</label>
-                    <input type="text" id="specify">
-                </div>
-
-                <div class="form-group">
-                    <label>Member Type:</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="memberType" value="New" required> New Member</label>
-                        <label><input type="radio" name="memberType" value="Old"> Old Member</label>
-                        <label><input type="radio" name="memberType" value="Honorary"> Honorary Member</label>
-                    </div>
-                </div>
-
-                <div class="section-title">PERSONAL INFORMATION</div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="lastName">Last Name *</label>
-                        <input type="text" id="lastName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="firstName">First Name *</label>
-                        <input type="text" id="firstName" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="middleName">Middle Name</label>
-                        <input type="text" id="middleName">
-                    </div>
-                    <div class="form-group">
-                        <label for="studentId">Student ID *</label>
-                        <input type="text" id="studentId" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="birthdate">Birthdate *</label>
-                        <input type="date" id="birthdate" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Sex *</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="sex" value="M" required> M</label>
-                            <label><input type="radio" name="sex" value="F"> F</label>
-=======
-=======
->>>>>>> 04e19f628b97753d2074058808ec8374aead12e1
     <title>UPAO Performing Arts Center</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Added QR code library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -215,7 +107,7 @@
                     <p class="event-info">A timeless tragedy brought to life by our talented ensemble. Experience the depth and drama of Shakespeare's masterpiece.</p>
                     <div class="event-actions">
                         <button class="event-action-btn primary" onclick="openEventDetails('Hamlet')">Details</button>
-                        <button class="event-action-btn" onclick="openReservationModal('Hamlet')">Book Tickets</button>
+                        <button class="event-action-btn" onclick="openReservationModal()">Book Tickets</button>
                     </div>
                 </div>
             </div>
@@ -235,7 +127,7 @@
                     <p class="event-info">An evening of classical masterpieces performed by the UPAO Symphony Orchestra featuring works by Beethoven and Mozart.</p>
                     <div class="event-actions">
                         <button class="event-action-btn primary" onclick="openEventDetails('Symphony')">Details</button>
-                        <button class="event-action-btn" onclick="openReservationModal('Symphony')">Book Tickets</button>
+                        <button class="event-action-btn" onclick="openReservationModal()">Book Tickets</button>
                     </div>
                 </div>
             </div>
@@ -255,7 +147,7 @@
                     <p class="event-info">Tchaikovsky's beloved ballet returns with stunning choreography and breathtaking performances by world-class dancers.</p>
                     <div class="event-actions">
                         <button class="event-action-btn primary" onclick="openEventDetails('Swan Lake')">Details</button>
-                        <button class="event-action-btn" onclick="openReservationModal('Swan Lake')">Book Tickets</button>
+                        <button class="event-action-btn" onclick="openReservationModal()">Book Tickets</button>
                     </div>
                 </div>
             </div>
@@ -275,7 +167,7 @@
                     <p class="event-info">Join us for our signature annual event celebrating arts and culture with performances, exhibitions, and special guests.</p>
                     <div class="event-actions">
                         <button class="event-action-btn primary" onclick="openEventDetails('Gala')">Details</button>
-                        <button class="event-action-btn" onclick="openReservationModal('Gala')">Book Tickets</button>
+                        <button class="event-action-btn" onclick="openReservationModal()">Book Tickets</button>
                     </div>
                 </div>
             </div>
@@ -295,7 +187,7 @@
                     <p class="event-info">Smooth jazz melodies under the night sky. An intimate evening featuring renowned jazz artists and cocktails.</p>
                     <div class="event-actions">
                         <button class="event-action-btn primary" onclick="openEventDetails('Jazz')">Details</button>
-                        <button class="event-action-btn" onclick="openReservationModal('Jazz')">Book Tickets</button>
+                        <button class="event-action-btn" onclick="openReservationModal()">Book Tickets</button>
                     </div>
                 </div>
             </div>
@@ -315,7 +207,7 @@
                     <p class="event-info">A collection of modern one-act plays exploring contemporary themes and pushing theatrical boundaries.</p>
                     <div class="event-actions">
                         <button class="event-action-btn primary" onclick="openEventDetails('Contemporary')">Details</button>
-                        <button class="event-action-btn" onclick="openReservationModal('Contemporary')">Book Tickets</button>
+                        <button class="event-action-btn" onclick="openReservationModal()">Book Tickets</button>
                     </div>
                 </div>
             </div>
@@ -611,323 +503,111 @@
     <!-- Event Reservation Modal -->
     <div id="reservationModal" class="modal">
         <div class="modal-content">
-            <!-- Simplified ticket header - removed perforations and excessive styling -->
-            <div class="ticket-header">
-                <div>
-                    <h2 class="ticket-title">Book Your Ticket</h2>
-                    <p class="ticket-subtitle">Cultural Show Reservation</p>
+            <div class="modal-header">
+                <div class="modal-logo-section">
+                    <img src="upao.jpg" alt="UPAO Logo" class="modal-logo">
+                    <div class="modal-logo-text">
+                        <h3>Event Reservation</h3>
+                        <p>Reserve Your Event Experience</p>
+                    </div>
                 </div>
                 <button class="close-button" onclick="closeReservationModal()">&times;</button>
             </div>
 
-            <form id="eventReservationForm" onsubmit="handleReservationSubmit(event)" class="ticket-form">
+            <form id="eventReservationForm" onsubmit="handleReservationSubmit(event)">
                 
-                <!-- Simplified event information section -->
-                <div class="form-section">
-                    <h3 class="section-title">Event Details</h3>
-                    
-                    <div class="event-info-display">
-                        <div class="info-row">
-                            <span class="info-label">Event Name:</span>
-                            <span class="info-value" id="display-event-name">Shakespeare's Hamlet</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Date & Time:</span>
-                            <span class="info-value" id="display-event-datetime">June 15, 2024 at 7:30 PM</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Venue:</span>
-                            <span class="info-value" id="display-event-venue">Main Hall</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Ticket Type:</span>
-                            <span class="info-value" id="display-ticket-type">General Admission</span>
-<<<<<<< HEAD
->>>>>>> 04e19f6 (Initial commit)
-=======
->>>>>>> 04e19f628b97753d2074058808ec8374aead12e1
-                        </div>
-                    </div>
-                </div>
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="nationality">Nationality</label>
-                        <input type="text" id="nationality" value="Filipino">
-                    </div>
-                    <div class="form-group">
-                        <label for="religion">Religion</label>
-                        <input type="text" id="religion">
-                    </div>
+                <!-- Event Details Section (Editable) -->
+                <div class="section-title-modal">Event Details</div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="res-event-name">Event Name *</label>
+                    <input type="text" class="form-input" id="res-event-name" required placeholder="Enter event name">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="civilStatus">Civil Status</label>
-                        <select id="civilStatus">
-                            <option value="Single">Single</option>
-                            <option value="Married">Married</option>
-                            <option value="Widowed">Widowed</option>
-                        </select>
+                        <label class="form-label" for="res-event-date">Event Date & Time *</label>
+                        <input type="datetime-local" class="form-input" id="res-event-date" required>
                     </div>
                     <div class="form-group">
-                        <label for="bloodType">Blood Type</label>
-                        <input type="text" id="bloodType" placeholder="e.g. O+">
+                        <label class="form-label" for="res-event-venue">Venue *</label>
+                        <input type="text" class="form-input" id="res-event-venue" required placeholder="Enter venue name">
+                    </div>
+                </div>
+
+                <!-- Client Information Section -->
+                <div class="section-title-modal">Client Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="res-firstName">First Name *</label>
+                        <input type="text" class="form-input" id="res-firstName" required placeholder="Enter your first name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="res-lastName">Last Name *</label>
+                        <input type="text" class="form-input" id="res-lastName" required placeholder="Enter your last name">
                     </div>
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group">
-                        <label for="mobile">Mobile Number *</label>
-                        <input type="tel" id="mobile" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="homeAddress">Home Address</label>
-                    <input type="text" id="homeAddress">
-                </div>
-
-                <div class="form-group">
-                    <label for="campusAddress">Campus Address</label>
-                    <input type="text" id="campusAddress">
-                </div>
-
-                <div class="section-title">ACCOUNT CREDENTIALS</div>
-
-                <div class="form-group">
-                    <label for="password">Password *</label>
-                    <input type="password" id="password" required minlength="6">
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password *</label>
-                    <input type="password" id="confirmPassword" required>
-                </div>
-
-                <button type="submit" class="btn">SUBMIT REGISTRATION</button>
-            </form>
-            <div id="register-message" class="message"></div>
-        </div>
-    </div>
-
-    <script>
-        function showForm(formType) {
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-
-            const forms = document.querySelectorAll('.form-content');
-            forms.forEach(form => form.classList.remove('active'));
-            
-            if (formType === 'login') {
-                document.getElementById('login-form').classList.add('active');
-            } else {
-                document.getElementById('register-form').classList.add('active');
-            }
-
-            document.querySelectorAll('.message').forEach(msg => {
-                msg.style.display = 'none';
-            });
-        }
-
-        async function handleLogin(event) {
-            event.preventDefault();
-            
-            const loginId = document.getElementById('login-id').value;
-            const password = document.getElementById('login-password').value;
-            const messageEl = document.getElementById('login-message');
-            const btn = event.target.querySelector('.btn');
-
-            btn.disabled = true;
-            btn.textContent = 'LOGGING IN...';
-
-            try {
-                const formData = new FormData();
-                formData.append('loginId', loginId);
-                formData.append('password', password);
-
-                const response = await fetch('login.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const contentType = response.headers.get("content-type");
-                
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new Error('Server returned non-JSON response. Please check if PHP server is running.');
-                }
-
-                const data = await response.json();
-
-                if (data.success) {
-                    messageEl.textContent = data.message;
-                    messageEl.className = 'message success';
-                    messageEl.style.display = 'block';
-                    event.target.reset();
-                } else {
-                    messageEl.textContent = data.message;
-                    messageEl.className = 'message error';
-                    messageEl.style.display = 'block';
-                }
-            } catch (error) {
-                messageEl.textContent = 'Connection error: ' + error.message;
-                messageEl.className = 'message error';
-                messageEl.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'LOGIN';
-            }
-        }
-
-        async function handleRegister(event) {
-            event.preventDefault();
-            
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const messageEl = document.getElementById('register-message');
-            const btn = event.target.querySelector('.btn');
-
-            if (password !== confirmPassword) {
-                messageEl.textContent = 'Passwords do not match!';
-                messageEl.className = 'message error';
-                messageEl.style.display = 'block';
-                return;
-            }
-
-            if (password.length < 6) {
-                messageEl.textContent = 'Password must be at least 6 characters.';
-                messageEl.className = 'message error';
-                messageEl.style.display = 'block';
-                return;
-            }
-
-            const artCategories = document.querySelectorAll('input[name="artCategory"]:checked');
-
-            btn.disabled = true;
-            btn.textContent = 'SUBMITTING...';
-
-            try {
-                const formData = new FormData();
-                
-                formData.append('lastName', document.getElementById('lastName').value);
-                formData.append('firstName', document.getElementById('firstName').value);
-                formData.append('middleName', document.getElementById('middleName').value);
-                formData.append('studentId', document.getElementById('studentId').value);
-                formData.append('birthdate', document.getElementById('birthdate').value);
-                formData.append('sex', document.querySelector('input[name="sex"]:checked')?.value || '');
-                formData.append('nationality', document.getElementById('nationality').value);
-                formData.append('religion', document.getElementById('religion').value);
-                formData.append('civilStatus', document.getElementById('civilStatus').value);
-                formData.append('bloodType', document.getElementById('bloodType').value);
-                formData.append('mobile', document.getElementById('mobile').value);
-                formData.append('email', document.getElementById('email').value);
-                formData.append('homeAddress', document.getElementById('homeAddress').value);
-                formData.append('campusAddress', document.getElementById('campusAddress').value);
-                formData.append('specify', document.getElementById('specify').value);
-                formData.append('memberType', document.querySelector('input[name="memberType"]:checked')?.value || '');
-                formData.append('password', password);
-                formData.append('confirmPassword', confirmPassword);
-                
-                artCategories.forEach(cat => formData.append('artCategory[]', cat.value));
-
-                const response = await fetch('register.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const contentType = response.headers.get("content-type");
-                
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new Error('Server returned non-JSON response. Please check if PHP server is running.');
-                }
-                
-                const data = await response.json();
-
-                if (data.success) {
-                    messageEl.textContent = data.message;
-                    messageEl.className = 'message success';
-                    messageEl.style.display = 'block';
-                    event.target.reset();
-                    
-                    setTimeout(() => {
-                        showForm('login');
-                    }, 2000);
-                } else {
-                    messageEl.textContent = data.message;
-                    messageEl.className = 'message error';
-                    messageEl.style.display = 'block';
-                }
-            } catch (error) {
-                messageEl.textContent = 'Connection error: ' + error.message;
-                messageEl.className = 'message error';
-                messageEl.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'SUBMIT REGISTRATION';
-            }
-        }
-    </script>
-=======
-=======
->>>>>>> 04e19f628b97753d2074058808ec8374aead12e1
-                <!-- Simplified personal information section -->
-                <div class="form-section">
-                    <h3 class="section-title">Your Information</h3>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="res-fullName">Full Name *</label>
-                        <input type="text" class="form-input" id="res-fullName" required placeholder="Enter your full name">
-                    </div>
-
                     <div class="form-group">
                         <label class="form-label" for="res-email">Email Address *</label>
                         <input type="email" class="form-input" id="res-email" required placeholder="your.email@example.com">
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="res-mobile">Mobile Number *</label>
-                        <input type="tel" class="form-input" id="res-mobile" required placeholder="+1 (555) 123-4567">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="res-address">Address (Optional)</label>
-                        <textarea class="form-input form-textarea" id="res-address" rows="2" placeholder="Enter your address"></textarea>
+                        <input type="tel" class="form-input" id="res-mobile" required placeholder="(555) 123-4567">
                     </div>
                 </div>
 
-                <!-- Simplified confirmation section -->
-                <div class="form-section">
-                    <h3 class="section-title">Confirmation</h3>
+                <div class="form-group">
+                    <label class="form-label" for="res-organization">Organization or Group Name (Optional)</label>
+                    <input type="text" class="form-input" id="res-organization" placeholder="Enter organization name for large bookings">
+                </div>
 
-                    <div class="form-group">
+                <!-- Requested Performance / Art Category Section -->
+                <div class="section-title-modal">Requested Performance / Art Category</div>
+
+                <div class="form-group">
+                    <label class="form-label">Select Field of Arts or Group Performing *</label>
+                    <div class="checkbox-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="res-acknowledge" required>
-                            <span>I acknowledge that tickets will be collected on-site *</span>
+                            <input type="checkbox" name="artCategory" value="Music"> Music
                         </label>
-                    </div>
-
-                    <div class="info-notice">
-                        <strong>Important:</strong> Tickets are free. Please bring your confirmation email to claim your ticket at the venue.
-                    </div>
-
-                    <div class="form-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="res-receive-confirmation">
-                            <span>Receive confirmation via SMS/email</span>
+                            <input type="checkbox" name="artCategory" value="Dance"> Dance
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="artCategory" value="Theater"> Theater
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="artCategory" value="Literary"> Literary
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="artCategory" value="Visual Arts"> Visual Arts
                         </label>
                     </div>
                 </div>
 
-                <!-- Simplified footer actions -->
+                <!-- Supporting Documents Section -->
+                <div class="section-title-modal">Supporting Documents</div>
+
+                <div class="form-group">
+                    <label class="form-label" for="res-documents">File Upload (Optional)</label>
+                    <input type="file" class="form-input file-input" id="res-documents" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    <small class="form-help-text">Upload approvals, special requests, or related documents (PDF, DOC, Images)</small>
+                </div>
+
+                <!-- Special Requests / Notes Section -->
+                <div class="section-title-modal">Special Requests / Notes</div>
+
+                <div class="form-group">
+                    <label class="form-label" for="res-notes">Additional Information (Optional)</label>
+                    <textarea class="form-input form-textarea" id="res-notes" rows="4" placeholder="Enter any special requests, accommodation needs, or additional notes..."></textarea>
+                </div>
+
                 <div class="modal-actions">
-                    <button type="submit" class="submit-button">Submit Booking</button>
+                    <button type="submit" class="submit-button">Submit Reservation</button>
                     <button type="button" class="modal-btn secondary" onclick="closeReservationModal()">Cancel</button>
                 </div>
             </form>
@@ -941,9 +621,5 @@
 
     <script src="index.js"></script>
     
-<<<<<<< HEAD
->>>>>>> 04e19f6 (Initial commit)
-=======
->>>>>>> 04e19f628b97753d2074058808ec8374aead12e1
 </body>
 </html>

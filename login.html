@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPAO Coordinator System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background-color: #e5e5e5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: white;
+      border: 4px solid black;
+      box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 1024px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .left-column {
+      background: black;
+      color: white;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .logo h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.75rem;
+    }
+
+    .logo p {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #a3a3a3;
+    }
+
+    .branding {
+      display: none;
+      margin-top: 4rem;
+    }
+
+    @media (min-width: 1024px) {
+      .branding {
+        display: block;
+      }
+    }
+
+    .branding-item {
+      border-left: 4px solid white;
+      padding-left: 1.5rem;
+    }
+
+    .branding-item h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .branding-item p {
+      font-size: 0.875rem;
+      color: #d4d4d4;
+      line-height: 1.6;
+    }
+
+    .objective {
+      margin-top: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+      .objective {
+        margin-top: 0;
+      }
+    }
+
+    .objective h3 {
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: #a3a3a3;
+    }
+
+    .objective-content {
+      border-left: 2px solid #404040;
+      padding-left: 1.5rem;
+    }
+
+    .objective-content p {
+      font-size: 0.875rem;
+      color: #d4d4d4;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .right-column {
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-container {
+      max-width: 28rem;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .form-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    @media (min-width: 1024px) {
+      .form-title {
+        text-align: left;
+      }
+    }
+
+    .alert {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 2px solid;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .alert-error {
+      background: #fef2f2;
+      color: #b91c1c;
+      border-color: #b91c1c;
+    }
+
+    .alert-success {
+      background: #f0fdf4;
+      color: #15803d;
+      border-color: #15803d;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid black;
+      background: #fafafa;
+      font-size: 0.875rem;
+      transition: background-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      background: white;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid black;
+      font-weight: bold;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: black;
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #262626;
+    }
+
+    .btn-primary:disabled {
+      background: #a3a3a3;
+      border-color: #a3a3a3;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: black;
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      background: black;
+      color: white;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid white;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .footer {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid #e5e5e5;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 0.75rem;
+      color: #737373;
+      margin-bottom: 1rem;
+    }
+
+    .account-type-box {
+      background: #fafafa;
+      border: 2px solid #d4d4d4;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .account-type-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+
+    .account-type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .account-type-btn {
+      padding: 1rem;
+      border: 2px solid #d4d4d4;
+      background: white;
+      color: black;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .account-type-btn.active {
+      background: black;
+      color: white;
+      border-color: black;
+    }
+
+    .account-type-btn:hover:not(.active) {
+      border-color: black;
+    }
+
+    .account-type-title {
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .account-type-subtitle {
+      font-size: 0.625rem;
+      margin-top: 0.25rem;
+      opacity: 0.75;
+    }
+
+    .member-warning {
+      background: #fef3c7;
+      border: 2px solid #d97706;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .member-warning p {
+      font-size: 0.75rem;
+      color: #92400e;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .password-requirements {
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      background: #fafafa;
+      border: 1px solid #d4d4d4;
+    }
+
+    .password-requirements ul {
+      list-style: none;
+    }
+
+    .password-requirements li {
+      font-size: 0.625rem;
+      margin-bottom: 0.25rem;
+      color: #737373;
+    }
+
+    .password-requirements li.valid {
+      color: #15803d;
+    }
+
+    .account-info {
+      margin-top: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+      .account-info {
+        margin-top: 0;
+      }
+    }
+
+    .account-info h3 {
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: #a3a3a3;
+    }
+
+    .account-type-info {
+      border-left: 2px solid #404040;
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .account-type-info p:first-child {
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .account-type-info p:last-child {
+      font-size: 0.875rem;
+      color: #d4d4d4;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="grid" id="app">
+      <!-- Content will be dynamically loaded here -->
+    </div>
+  </div>
+
+  <script>
+    // State management
+    let currentPage = 'login';
+    let formData = {
+      login: { email: '', password: '' },
+      register: {
+        accountType: 'USER',
+        fullName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        memberCode: ''
+      }
+    };
+    let passwordReqs = {
+      length: false,
+      uppercase: false,
+      lowercase: false,
+      number: false
+    };
+
+    // Navigation
+    function navigateTo(page) {
+      currentPage = page;
+      render();
+    }
+
+    // Alert management
+    function showAlert(message, type) {
+      const alertDiv = document.getElementById('alert');
+      if (alertDiv) {
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.textContent = message;
+        alertDiv.classList.remove('hidden');
+      }
+    }
+
+    function hideAlert() {
+      const alertDiv = document.getElementById('alert');
+      if (alertDiv) {
+        alertDiv.classList.add('hidden');
+      }
+    }
+
+    // Password validation
+    function validatePassword(password) {
+      passwordReqs = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /[0-9]/.test(password)
+      };
+      updatePasswordRequirements();
+    }
+
+    function updatePasswordRequirements() {
+      const reqs = document.querySelectorAll('.password-requirements li');
+      if (reqs.length === 4) {
+        reqs[0].className = passwordReqs.length ? 'valid' : '';
+        reqs[1].className = passwordReqs.uppercase ? 'valid' : '';
+        reqs[2].className = passwordReqs.lowercase ? 'valid' : '';
+        reqs[3].className = passwordReqs.number ? 'valid' : '';
+      }
+    }
+
+    // Login form handler
+    function handleLogin(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const email = formData.login.email;
+      const password = formData.login.password;
+
+      if (!email || !password) {
+        showAlert('Please enter both email and password', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Signing In...';
+
+      setTimeout(() => {
+        if (email === 'test@example.com' && password === 'password') {
+          showAlert('Welcome! Redirecting...', 'success');
+          setTimeout(() => {
+            alert('Login successful! Dashboard would load here.');
+            btn.disabled = false;
+            btn.textContent = 'Login to System';
+          }, 1000);
+        } else {
+          showAlert('Invalid email or password', 'error');
+          formData.login.password = '';
+          btn.disabled = false;
+          btn.textContent = 'Login to System';
+          render();
+        }
+      }, 1000);
+    }
+
+    // Register form handler
+    function handleRegister(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const { accountType, fullName, email, password, confirmPassword, memberCode } = formData.register;
+
+      if (!fullName || !email || !password || !confirmPassword) {
+        showAlert('Please fill in all fields', 'error');
+        return;
+      }
+
+      if (accountType === 'MEMBER' && !memberCode) {
+        showAlert('Please enter your UPAO member verification code', 'error');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showAlert('Please enter a valid email address', 'error');
+        return;
+      }
+
+      if (!passwordReqs.length || !passwordReqs.uppercase || !passwordReqs.lowercase || !passwordReqs.number) {
+        showAlert('Password does not meet all requirements', 'error');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showAlert('Passwords do not match', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('registerBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Creating Account...';
+
+      setTimeout(() => {
+        showAlert('Account created successfully! Redirecting...', 'success');
+        setTimeout(() => {
+          navigateTo('login');
+          btn.disabled = false;
+          btn.textContent = 'Create Account';
+        }, 1500);
+      }, 1000);
+    }
+
+    // Render login page
+    function renderLogin() {
+      return `
+        <div class="left-column">
+          <div>
+            <div class="logo">
+              <h1>UPAO</h1>
+              <p>Coordinator System Login</p>
+            </div>
+            <div class="branding">
+              <div class="branding-item">
+                <h2>Secure Access</h2>
+                <p>Enter your credentials to access the coordinator management system</p>
+              </div>
+            </div>
+          </div>
+          <div class="objective">
+            <h3>System Objective</h3>
+            <div class="objective-content">
+              <p>The UPAO Coordinator System streamlines academic coordination, enabling efficient management of programs, schedules, and resources across departments.</p>
+              <p>Access real-time data, coordinate with faculty, and make informed decisions to enhance educational excellence.</p>
+            </div>
+          </div>
+        </div>
+        <div class="right-column">
+          <div class="form-container">
+            <h2 class="form-title">Sign In</h2>
+            <div id="alert" class="alert hidden"></div>
+            <form onsubmit="handleLogin(event)">
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required autocomplete="email" value="${formData.login.email}" oninput="formData.login.email = this.value">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password" value="${formData.login.password}" oninput="formData.login.password = this.value">
+              </div>
+              <button type="submit" class="btn btn-primary" id="loginBtn">Login to System</button>
+            </form>
+            <div class="footer">
+              <p>Don't have an account?</p>
+              <a href="#" class="btn btn-secondary" onclick="navigateTo('register'); return false;">Create Account</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render register page
+    function renderRegister() {
+      return `
+        <div class="left-column">
+          <div>
+            <div class="logo">
+              <h1>UPAO</h1>
+              <p>Create New Account</p>
+            </div>
+            <div class="branding">
+              <div class="branding-item">
+                <h2>Join Our System</h2>
+                <p>Create your account to access the coordinator management system</p>
+              </div>
+            </div>
+          </div>
+          <div class="account-info">
+            <h3>Account Types</h3>
+            <div class="account-type-info">
+              <p>Regular User</p>
+              <p>Basic access to view and interact with system resources</p>
+            </div>
+            <div class="account-type-info">
+              <p>UPAO Member</p>
+              <p>Enhanced privileges for coordinators and faculty members</p>
+            </div>
+          </div>
+        </div>
+        <div class="right-column">
+          <div class="form-container">
+            <h2 class="form-title">Register</h2>
+            <div id="alert" class="alert hidden"></div>
+            <form onsubmit="handleRegister(event)">
+              <div class="account-type-box">
+                <span class="account-type-label">Account Type</span>
+                <div class="account-type-grid">
+                  <button type="button" class="account-type-btn ${formData.register.accountType === 'USER' ? 'active' : ''}" onclick="formData.register.accountType = 'USER'; render();">
+                    <div class="account-type-title">Regular User</div>
+                    <div class="account-type-subtitle">Basic access</div>
+                  </button>
+                  <button type="button" class="account-type-btn ${formData.register.accountType === 'MEMBER' ? 'active' : ''}" onclick="formData.register.accountType = 'MEMBER'; render();">
+                    <div class="account-type-title">UPAO Member</div>
+                    <div class="account-type-subtitle">Member access</div>
+                  </button>
+                </div>
+              </div>
+              ${formData.register.accountType === 'MEMBER' ? `
+                <div class="member-warning">
+                  <p>UPAO Members require a verification code</p>
+                  <label for="memberCode">Member Verification Code</label>
+                  <input type="text" id="memberCode" placeholder="Enter your member code" required value="${formData.register.memberCode}" oninput="formData.register.memberCode = this.value">
+                </div>
+              ` : ''}
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required autocomplete="name" value="${formData.register.fullName}" oninput="formData.register.fullName = this.value">
+              </div>
+              <div class="form-group">
+                <label for="regEmail">Email Address</label>
+                <input type="email" id="regEmail" placeholder="Enter your email" required autocomplete="email" value="${formData.register.email}" oninput="formData.register.email = this.value">
+              </div>
+              <div class="form-group">
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" placeholder="Create a password" required autocomplete="new-password" value="${formData.register.password}" oninput="formData.register.password = this.value; validatePassword(this.value)">
+                <div class="password-requirements">
+                  <ul>
+                    <li class="${passwordReqs.length ? 'valid' : ''}">${passwordReqs.length ? '✓' : '○'} At least 8 characters</li>
+                    <li class="${passwordReqs.uppercase ? 'valid' : ''}">${passwordReqs.uppercase ? '✓' : '○'} One uppercase letter</li>
+                    <li class="${passwordReqs.lowercase ? 'valid' : ''}">${passwordReqs.lowercase ? '✓' : '○'} One lowercase letter</li>
+                    <li class="${passwordReqs.number ? 'valid' : ''}">${passwordReqs.number ? '✓' : '○'} One number</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required autocomplete="new-password" value="${formData.register.confirmPassword}" oninput="formData.register.confirmPassword = this.value">
+              </div>
+              <button type="submit" class="btn btn-primary" id="registerBtn">Create Account</button>
+            </form>
+            <div class="footer">
+              <p>Already have an account?</p>
+              <a href="#" class="btn btn-secondary" onclick="navigateTo('login'); return false;">Login Here</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Main render function
+    function render() {
+      const app = document.getElementById('app');
+      if (currentPage === 'login') {
+        app.innerHTML = renderLogin();
+      } else if (currentPage === 'register') {
+        app.innerHTML = renderRegister();
+      }
+    }
+
+    // Initialize
+    render();
+  </script>
+</body>
+</html>

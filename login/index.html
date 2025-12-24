@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <script src="login.js" defer></script>
+    <title>UPAO - Cultural Arts Group</title>
+   
+       
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo">UPAO</div>
+                <h1>UPAO</h1>
+            </div>
+            <p>Cultural Arts Group Membership</p>
+            <div class="objective">
+                <strong>Objective:</strong>
+                To develop and promote cultural arts excellence among students through creative expression, skill development, and community engagement in music, dance, theater, literary arts, and visual arts.
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showForm('login')">LOGIN</button>
+            <button class="tab" onclick="showForm('register')">REGISTER</button>
+        </div>
+
+        <!-- Updated login form with Student ID option -->
+        <div id="login-form" class="form-content active">
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-id">Student ID or Email</label>
+                    <input type="text" id="login-id" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn">LOGIN</button>
+            </form>
+            <div id="login-message" class="message"></div>
+        </div>
+
+        <!-- Completely redesigned registration form based on UPAO document -->
+        <div id="register-form" class="form-content">
+            <form id="registrationForm" onsubmit="handleRegister(event)">
+                <!-- Membership Classification -->
+                <div class="section-title">MEMBERSHIP CLASSIFICATION</div>
+                
+                <div class="form-group">
+                    <label>Art Category:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="artCategory" value="Music"> Music</label>
+                        <label><input type="checkbox" name="artCategory" value="Dance"> Dance</label>
+                        <label><input type="checkbox" name="artCategory" value="Theater"> Theater</label>
+                        <label><input type="checkbox" name="artCategory" value="Literary"> Literary</label>
+                        <label><input type="checkbox" name="artCategory" value="Visual Arts"> Visual Arts</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="specify">Specify:</label>
+                    <input type="text" id="specify">
+                </div>
+
+                <div class="form-group">
+                    <label>Member Type:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="memberType" value="New" required> New Member</label>
+                        <label><input type="radio" name="memberType" value="Old"> Old Member</label>
+                        <label><input type="radio" name="memberType" value="Honorary"> Honorary Member</label>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="section-title">PERSONAL INFORMATION</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="middleName">Middle Name</label>
+                        <input type="text" id="middleName">
+                    </div>
+                    <div class="form-group">
+                        <label for="studentId">Student ID *</label>
+                        <input type="text" id="studentId" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthdate">Birthdate *</label>
+                        <input type="date" id="birthdate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sex *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="sex" value="M" required> M</label>
+                            <label><input type="radio" name="sex" value="F"> F</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nationality">Nationality</label>
+                        <input type="text" id="nationality" value="Filipino">
+                    </div>
+                    <div class="form-group">
+                        <label for="religion">Religion</label>
+                        <input type="text" id="religion">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="civilStatus">Civil Status</label>
+                        <select id="civilStatus">
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bloodType">Blood Type</label>
+                        <input type="text" id="bloodType" placeholder="e.g. O+">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number *</label>
+                        <input type="tel" id="mobile" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="homeAddress">Home Address</label>
+                    <input type="text" id="homeAddress">
+                </div>
+
+                <div class="form-group">
+                    <label for="campusAddress">Campus Address</label>
+                    <input type="text" id="campusAddress">
+                </div>
+
+                <!-- Account Creation -->
+                <div class="section-title">ACCOUNT CREDENTIALS</div>
+
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password *</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+
+                <button type="submit" class="btn">SUBMIT REGISTRATION</button>
+            </form>
+            <div id="register-message" class="message"></div>
+        </div>
+    </div>
+
+    
+</body>
+</html>

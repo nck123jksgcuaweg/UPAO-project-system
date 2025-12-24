@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPAO Member Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #e8e8e8;
+            color: #000000f5;
+            line-height: 1.4;
+        }
+
+        /* Admin-style layout with sidebar */
+        .member-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar - matching admin.html design */
+        .sidebar {
+            width: 220px;
+            background: #2c2c2c;
+            color: #fff;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            border-right: 3px solid #000;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 15px;
+            background: #1a1a1a;
+            border-bottom: 2px solid #000;
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #dbdedb;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .sidebar-nav {
+            padding: 10px 0;
+        }
+
+        .nav-section h3 {
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #666;
+            padding: 10px 15px;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 15px;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 13px;
+            border-left: 3px solid transparent;
+            transition: all 0.1s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: #3a3a3a;
+            color: #fff;
+            border-left-color: #cccccc;
+        }
+
+        .nav-item.active .nav-link {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-left-color: #efefe6;
+            font-weight: bold;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            width: 220px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-top: 2px solid #000;
+        }
+
+        .user-info {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .user-name {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Main Content - matching admin.html layout */
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+            background: #e8e8e8;
+        }
+
+        .header {
+            background: #fff;
+            border-bottom: 3px solid #000;
+            padding: 15px 25px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: #fff;
+            border: 2px solid #000;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background: #000;
+            color: #ffffff;
+            padding: 10px 15px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #000;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #000;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: #000;
+            color: #fff;
+            border: 3px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .profile-info h2 {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .profile-info p {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        /* Form Styles */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #000;
+            font-size: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #fffcfc;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            background: #f6f4f4;
+        }
+
+        input:disabled, select:disabled {
+            background: #d0d0d0;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Buttons - matching admin.html style */
+        .btn {
+            padding: 6px 12px;
+            border: 2px solid #000;
+            background: #ffffff;
+            color: #000;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.1s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: #eff5ef;
+        }
+
+        .btn-primary:hover {
+            background: #efefed;
+            color: #000;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #000;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        /* Events List */
+        .events-table-wrapper {
+            background: #fff;
+            border: 2px solid #000;
+        }
+
+        .table-header {
+            background: #000;
+            color: #ffffff;
+            padding: 10px 15px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        thead {
+            background: #d0d0d0;
+        }
+
+        th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: bold;
+            color: #000;
+            text-transform: uppercase;
+            border: 1px solid #999;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            font-size: 12px;
+            color: #000;
+            background: #fff;
+        }
+
+        tbody tr:nth-child(even) td {
+            background: #f5f5f5;
+        }
+
+        /* Status Badges - matching admin.html */
+        .status-badge {
+            padding: 4px 8px;
+            font-size: 10px;
+            text-transform: uppercase;
+            border: 2px solid;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .status-attended {
+            background: #5fa74d;
+            color: #ffffff;
+            border-color: #5fa74d;
+        }
+
+        .status-joined {
+            background: #bdad21;
+            color: #fffdfd;
+            border-color: #bdad21;
+        }
+
+        .status-missed {
+            background: #c60c0c;
+            color: #fdfdfd;
+            border-color: #c60c0c;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #000;
+            color: #fff;
+            padding: 12px 20px;
+            border: 2px solid #000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.error {
+            background: #c60c0c;
+            border-color: #c60c0c;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #f5f5f5;
+            border: 2px solid #000;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h3 {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .info-box p {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Notification Box */
+        .notification-box {
+            background: #fff8e1;
+            border: 2px solid #f9a825;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .notification-box.warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .notification-icon {
+            font-size: 20px;
+            color: #f9a825;
+            flex-shrink: 0;
+        }
+
+        .notification-content h3 {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            color: #000;
+        }
+
+        .notification-content p {
+            font-size: 11px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .notification-content ul {
+            margin: 10px 0 0 20px;
+            font-size: 11px;
+            color: #333;
+        }
+
+        .notification-content ul li {
+            margin-bottom: 5px;
+        }
+
+        .notification-box.hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-footer {
+                position: relative;
+                width: 100%;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 10px;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+
+            /* Add mobile menu toggle */
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                z-index: 1001;
+                background: #000;
+                color: #fff;
+                border: none;
+                padding: 10px 15px;
+                cursor: pointer;
+                font-size: 18px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-toggle {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Added mobile menu toggle button -->
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="member-container">
+        <!-- Admin-style sidebar with navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-text">
+                    <h1>UPAO</h1>
+                    <p>Member Portal</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>Dashboard</h3>
+                    <ul class="nav-menu">
+                        <li class="nav-item active">
+                            <a class="nav-link" data-page="profile">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-page="events">
+                                <i class="fas fa-calendar"></i> Events
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- Renamed navigation from Performance Notes to Personal Information -->
+                            <a class="nav-link" data-page="notes">
+                                <i class="fas fa-user-edit"></i> Personal Information
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-name" id="sidebarUserName">MEMBER</div>
+                    <div>Member Access</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main content area with header -->
+        <div class="main-content">
+            <header class="header">
+                <div class="header-title">
+                    <h1 id="pageTitle">Profile</h1>
+                    <p id="pageSubtitle">View and manage your profile information</p>
+                </div>
+            </header>
+
+            <main class="content">
+                <!-- Profile Page -->
+                <div class="page-content active" id="profileContent">
+                    <!-- Upcoming Performance Notification - auto-generated based on "upcoming" status -->
+                    <div class="notification-box warning hidden" id="upcomingNotification">
+                        <div class="notification-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notification-content">
+                            <h3><i class="fas fa-calendar-check"></i> Upcoming Performance</h3>
+                            <p><strong>You have upcoming events scheduled!</strong></p>
+                            <ul id="upcomingEventsList">
+                                <!-- Dynamically populated -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Read-only info box for members -->
+                    <div class="info-box">
+                        <h3><i class="fas fa-info-circle"></i> Member Information</h3>
+                        <p>Your profile is managed by administrators. You can update your contact information and course details. Core information like Member ID and Field cannot be changed.</p>
+                    </div>
+
+                    <div class="profile-card">
+                        <div class="card-header">Personal Information</div>
+                        <div class="card-body">
+                            <div class="profile-header">
+                                <div class="profile-avatar" id="avatarInitials">AG</div>
+                                <div class="profile-info">
+                                    <h2 id="displayName">Ana Garcia</h2>
+                                    <p id="displayMemberId">Member ID: MEM-001</p>
+                                    <p id="displayField">Theater</p>
+                                    <p id="displayStatus">Active Member</p>
+                                </div>
+                            </div>
+
+                            <div class="profile-grid">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="fullName" value="Ana Garcia" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Member ID</label>
+                                    <input type="text" id="memberId" value="MEM-001" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="email" value="ana.garcia@university.edu">
+                                </div>
+                                <div class="form-group">
+                                    <label>Course & Year</label>
+                                    <input type="text" id="courseYear" value="BS CS 1C">
+                                </div>
+                                <div class="form-group">
+                                    <label>Field of Arts</label>
+                                    <input type="text" id="fieldArts" value="Theater" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date Joined</label>
+                                    <input type="text" id="dateJoined" value="November 03, 2024" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Semester</label>
+                                    <input type="text" id="semester" value="1st Sem AY 2024-2025">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" id="phone" value="+1 (555) 123-4567">
+                                </div>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" onclick="saveProfile()">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Events Page -->
+                <div class="page-content" id="eventsContent">
+                    <!-- Stats overview for events -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalEvents">5</div>
+                            <div class="stat-label">Total Events</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="attendedEvents">4</div>
+                            <div class="stat-label">Attended</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="attendanceRate">80%</div>
+                            <div class="stat-label">Attendance Rate</div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <h3><i class="fas fa-calendar-check"></i> Event Participation</h3>
+                        <p>View your event history and attendance record. Event registration and status updates are managed by administrators.</p>
+                    </div>
+
+                    <!-- Table layout for events -->
+                    <div class="events-table-wrapper">
+                        <div class="table-header">Events Overview</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTableBody">
+                                <!-- Events will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Attendance Record Section - Read-only, admin-controlled -->
+                    <div class="events-table-wrapper" style="margin-top: 20px;">
+                        <div class="table-header">Attendance Record</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Attendance</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody">
+                                <!-- Attendance records will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Personal & Educational Information Page -->
+                <!-- Replaced Performance Notes with comprehensive Personal & Educational Information form -->
+                <div class="page-content" id="notesContent">
+                    <div class="info-box">
+                        <h3><i class="fas fa-user-edit"></i> Personal & Educational Information</h3>
+                        <p>Complete your personal and educational details. This information is shared with administrators for official records.</p>
+                    </div>
+
+                    <!-- Academic Term Selection -->
+                    <div class="profile-card">
+                        <div class="card-header">Academic Term</div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Semester</label>
+                                    <select id="semester">
+                                        <option value="">Select Semester</option>
+                                        <option value="First Semester">First Semester</option>
+                                        <option value="Second Semester">Second Semester</option>
+                                        <option value="Summer">Summer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>School Year</label>
+                                    <input type="text" id="schoolYear" placeholder="e.g., 2023-2024">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Membership Classification -->
+                    <div class="profile-card">
+                        <div class="card-header">Membership Classification</div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Classification (Select one)</label>
+                                <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem;">
+                                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="radio" name="classification" value="Music" id="classMusic">
+                                        Music
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="radio" name="classification" value="Dance" id="classDance">
+                                        Dance
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="radio" name="classification" value="Theater" id="classTheater">
+                                        Theater
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="radio" name="classification" value="Literary" id="classLiterary">
+                                        Literary
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="radio" name="classification" value="Visual Arts" id="classVisualArts">
+                                        Visual Arts
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Specify (if applicable)</label>
+                                <input type="text" id="classificationSpecify" placeholder="e.g., Piano, Contemporary Dance">
+                            </div>
+                            <div class="form-group">
+                                <label>Member Type</label>
+                                <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem;">
+                                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="radio" name="memberType" value="New member" id="typeNew">
+                                        New member
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="radio" name="memberType" value="Old member" id="typeOld">
+                                        Old member
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="radio" name="memberType" value="Honorary member" id="typeHonorary">
+                                        Honorary member
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="profile-card">
+                        <div class="card-header">Part I. Personal Information</div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" id="lastName" placeholder="Last Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" id="firstName" placeholder="First Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Middle Name</label>
+                                    <input type="text" id="middleName" placeholder="Middle Name">
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Birthdate (mm/dd/yyyy)</label>
+                                    <input type="date" id="birthdate">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sex</label>
+                                    <select id="sex">
+                                        <option value="">Select</option>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Student ID Number</label>
+                                    <input type="text" id="studentId" placeholder="Student ID">
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Nationality</label>
+                                    <input type="text" id="nationality" placeholder="Nationality">
+                                </div>
+                                <div class="form-group">
+                                    <label>Religion</label>
+                                    <input type="text" id="religion" placeholder="Religion">
+                                </div>
+                                <div class="form-group">
+                                    <label>Civil Status</label>
+                                    <select id="civilStatus">
+                                        <option value="">Select</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Separated">Separated</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Blood Type</label>
+                                    <select id="bloodType">
+                                        <option value="">Select</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Mobile Number</label>
+                                    <input type="tel" id="mobileNumber" placeholder="+63 XXX XXX XXXX">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="emailAddress" placeholder="email@example.com">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Home Address</label>
+                                <textarea id="homeAddress" rows="2" placeholder="Complete home address"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Campus Address</label>
+                                <textarea id="campusAddress" rows="2" placeholder="Dormitory, boarding house, or campus address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parent/Guardian Information -->
+                    <div class="profile-card">
+                        <div class="card-header">Parent/Guardian Information</div>
+                        <div class="card-body">
+                            <h4 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 0.9rem;">Father's Information</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Father's Name</label>
+                                    <input type="text" id="fatherName" placeholder="Father's full name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input type="tel" id="fatherContact" placeholder="+63 XXX XXX XXXX">
+                                </div>
+                                <div class="form-group">
+                                    <label>Occupation</label>
+                                    <input type="text" id="fatherOccupation" placeholder="Occupation">
+                                </div>
+                            </div>
+
+                            <h4 style="margin: 1.5rem 0 1rem; color: var(--text-primary); font-size: 0.9rem;">Mother's Information</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Mother's Name (indicate maiden name)</label>
+                                    <input type="text" id="motherName" placeholder="Mother's full name (maiden name)">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input type="tel" id="motherContact" placeholder="+63 XXX XXX XXXX">
+                                </div>
+                                <div class="form-group">
+                                    <label>Occupation</label>
+                                    <input type="text" id="motherOccupation" placeholder="Occupation">
+                                </div>
+                            </div>
+
+                            <h4 style="margin: 1.5rem 0 1rem; color: var(--text-primary); font-size: 0.9rem;">Guardian/Landlord Information</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Name of Guardian/Landlord/Landlady</label>
+                                    <input type="text" id="guardianName" placeholder="Guardian/Landlord name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input type="tel" id="guardianContact" placeholder="+63 XXX XXX XXXX">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="profile-card">
+                        <div class="card-header">Emergency Contact</div>
+                        <div class="card-body">
+                            <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem;">Person to be notified in case of emergency</p>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" id="emergencyName" placeholder="Full name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Relationship</label>
+                                    <input type="text" id="emergencyRelationship" placeholder="e.g., Parent, Sibling, Relative">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input type="tel" id="emergencyContact" placeholder="+63 XXX XXX XXXX">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Educational Background -->
+                    <div class="profile-card">
+                        <div class="card-header">Part II. Educational Background</div>
+                        <div class="card-body">
+                            <!-- Elementary -->
+                            <h4 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 0.9rem;">Elementary</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                <div class="form-group">
+                                    <label>Name of School</label>
+                                    <input type="text" id="elemSchool" placeholder="Elementary school name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year Graduated</label>
+                                    <input type="text" id="elemYear" placeholder="e.g., 2018">
+                                </div>
+                                <div class="form-group">
+                                    <label>School Address</label>
+                                    <input type="text" id="elemAddress" placeholder="School address">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label>Membership in School Organization (related to Culture and the Arts)</label>
+                                <textarea id="elemOrg" rows="2" placeholder="List any arts-related organizations"></textarea>
+                            </div>
+
+                            <!-- Junior High School -->
+                            <h4 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 0.9rem;">Junior High School</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                <div class="form-group">
+                                    <label>Name of School</label>
+                                    <input type="text" id="jhsSchool" placeholder="Junior high school name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year Graduated</label>
+                                    <input type="text" id="jhsYear" placeholder="e.g., 2020">
+                                </div>
+                                <div class="form-group">
+                                    <label>School Address</label>
+                                    <input type="text" id="jhsAddress" placeholder="School address">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label>Membership in School Organization (related to Culture and the Arts)</label>
+                                <textarea id="jhsOrg" rows="2" placeholder="List any arts-related organizations"></textarea>
+                            </div>
+
+                            <!-- Senior High School -->
+                            <h4 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 0.9rem;">Senior High School</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                <div class="form-group">
+                                    <label>Name of School</label>
+                                    <input type="text" id="shsSchool" placeholder="Senior high school name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year Graduated</label>
+                                    <input type="text" id="shsYear" placeholder="e.g., 2022">
+                                </div>
+                                <div class="form-group">
+                                    <label>School Address</label>
+                                    <input type="text" id="shsAddress" placeholder="School address">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Membership in School Organization (related to Culture and the Arts)</label>
+                                <textarea id="shsOrg" rows="2" placeholder="List any arts-related organizations"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <div class="profile-card">
+                        <div class="card-body">
+                            <div class="button-group">
+                                <button class="btn btn-primary" onclick="savePersonalInfo()">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'performerSystem_data';
+        
+        // Initialize or get existing data
+        function getSharedData() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : getDefaultData();
+        }
+
+        function getDefaultData() {
+            return {
+                profile: {
+                    fullName: 'Ana Garcia',
+                    memberId: 'MEM-001',
+                    email: 'ana.garcia@university.edu',
+                    courseYear: 'BS CS 1C',
+                    fieldArts: 'Theater',
+                    dateJoined: 'November 03, 2024',
+                    semester: '1st Sem AY 2024-2025',
+                    phone: '+1 (555) 123-4567'
+                },
+                events: [
+                    { id: 1, name: 'Theater Workshop', date: '2024-10-15', status: 'attended', notes: 'Great participation' },
+                    { id: 2, name: 'Drama Performance', date: '2024-10-22', status: 'attended', notes: 'Excellent performance' },
+                    { id: 3, name: 'Acting Class', date: '2024-11-05', status: 'attended', notes: 'Active in exercises' },
+                    { id: 4, name: 'Stage Production', date: '2024-11-12', status: 'attended', notes: 'Lead role' },
+                    { id: 5, name: 'Scene Study', date: '2024-11-20', status: 'joined', notes: 'Registered' }
+                ],
+                personalInfo: {
+                    semester: '',
+                    schoolYear: '',
+                    classification: '',
+                    classificationSpecify: '',
+                    memberType: '',
+                    lastName: '',
+                    firstName: '',
+                    middleName: '',
+                    birthdate: '',
+                    sex: '',
+                    studentId: '',
+                    nationality: '',
+                    religion: '',
+                    civilStatus: '',
+                    bloodType: '',
+                    mobileNumber: '',
+                    emailAddress: '',
+                    homeAddress: '',
+                    campusAddress: '',
+                    fatherName: '',
+                    fatherContact: '',
+                    fatherOccupation: '',
+                    motherName: '',
+                    motherContact: '',
+                    motherOccupation: '',
+                    guardianName: '',
+                    guardianContact: '',
+                    emergencyName: '',
+                    emergencyRelationship: '',
+                    emergencyContact: '',
+                    elemSchool: '',
+                    elemYear: '',
+                    elemAddress: '',
+                    elemOrg: '',
+                    jhsSchool: '',
+                    jhsYear: '',
+                    jhsAddress: '',
+                    jhsOrg: '',
+                    shsSchool: '',
+                    shsYear: '',
+                    shsAddress: '',
+                    shsOrg: ''
+                }
+            };
+        }
+
+        function saveSharedData(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function loadProfile() {
+            const data = getSharedData();
+            const profile = data.profile;
+            
+            document.getElementById('fullName').value = profile.fullName;
+            document.getElementById('memberId').value = profile.memberId;
+            document.getElementById('email').value = profile.email;
+            document.getElementById('courseYear').value = profile.courseYear;
+            document.getElementById('fieldArts').value = profile.fieldArts;
+            document.getElementById('dateJoined').value = profile.dateJoined;
+            document.getElementById('semester').value = profile.semester;
+            document.getElementById('phone').value = profile.phone;
+            
+            // Update display elements
+            document.getElementById('displayName').textContent = profile.fullName;
+            document.getElementById('displayMemberId').textContent = `Member ID: ${profile.memberId}`;
+            document.getElementById('displayField').textContent = profile.fieldArts;
+            document.getElementById('sidebarUserName').textContent = profile.fullName.toUpperCase();
+            
+            // Generate avatar initials
+            const initials = profile.fullName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+            document.getElementById('avatarInitials').textContent = initials;
+        }
+
+        // Save profile data (only editable fields)
+        function saveProfile() {
+            const data = getSharedData();
+            data.profile.email = document.getElementById('email').value;
+            data.profile.courseYear = document.getElementById('courseYear').value;
+            data.profile.semester = document.getElementById('semester').value;
+            data.profile.phone = document.getElementById('phone').value;
+            
+            saveSharedData(data);
+            showToast('Profile updated successfully');
+        }
+
+        function loadEvents() {
+            const data = getSharedData();
+            const events = data.events || [];
+            const eventsTableBody = document.getElementById('eventsTableBody');
+            
+            if (events.length === 0) {
+                eventsTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666;">No events found</td></tr>';
+            } else {
+                eventsTableBody.innerHTML = events.map(event => {
+                    let statusClass = 'status-joined';
+                    if (event.status === 'attended') statusClass = 'status-attended';
+                    if (event.status === 'missed') statusClass = 'status-missed';
+                    
+                    return `
+                        <tr>
+                            <td><strong>${event.name}</strong></td>
+                            <td>${formatDate(event.date)}</td>
+                            <td><span class="status-badge ${statusClass}">${event.status.toUpperCase()}</span></td>
+                            <td>${event.notes || '-'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // Update stats
+            const attended = events.filter(e => e.status === 'attended').length;
+            const total = events.length;
+            const rate = total > 0 ? Math.round((attended / total) * 100) : 0;
+            
+            document.getElementById('totalEvents').textContent = total;
+            document.getElementById('attendedEvents').textContent = attended;
+            document.getElementById('attendanceRate').textContent = rate + '%';
+
+            loadAttendanceRecords();
+        }
+
+        function loadAttendanceRecords() {
+            const data = getSharedData();
+            const events = data.events || [];
+            const attendanceTableBody = document.getElementById('attendanceTableBody');
+            
+            // Filter events to show only those with defined attendance (attended/missed)
+            const attendanceEvents = events.filter(e => e.status === 'attended' || e.status === 'missed');
+            
+            if (attendanceEvents.length === 0) {
+                attendanceTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666;">No attendance records yet</td></tr>';
+            } else {
+                attendanceTableBody.innerHTML = attendanceEvents.map(event => {
+                    const isPresent = event.status === 'attended';
+                    const attendanceStatus = isPresent ? 'Present' : 'Absent';
+                    const statusClass = isPresent ? 'status-attended' : 'status-missed';
+                    
+                    return `
+                        <tr>
+                            <td><strong>${event.name}</strong></td>
+                            <td>${formatDate(event.date)}</td>
+                            <td><span class="status-badge ${statusClass}">${attendanceStatus}</span></td>
+                            <td>${event.notes || 'No remarks'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Format date for better readability
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Save personal and educational information
+        function savePersonalInfo() {
+            const data = getSharedData();
+            
+            // Collect all form data
+            data.personalInfo = {
+                semester: document.getElementById('semester').value,
+                schoolYear: document.getElementById('schoolYear').value,
+                classification: document.querySelector('input[name="classification"]:checked')?.value || '',
+                classificationSpecify: document.getElementById('classificationSpecify').value,
+                memberType: document.querySelector('input[name="memberType"]:checked')?.value || '',
+                lastName: document.getElementById('lastName').value,
+                firstName: document.getElementById('firstName').value,
+                middleName: document.getElementById('middleName').value,
+                birthdate: document.getElementById('birthdate').value,
+                sex: document.getElementById('sex').value,
+                studentId: document.getElementById('studentId').value,
+                nationality: document.getElementById('nationality').value,
+                religion: document.getElementById('religion').value,
+                civilStatus: document.getElementById('civilStatus').value,
+                bloodType: document.getElementById('bloodType').value,
+                mobileNumber: document.getElementById('mobileNumber').value,
+                emailAddress: document.getElementById('emailAddress').value,
+                homeAddress: document.getElementById('homeAddress').value,
+                campusAddress: document.getElementById('campusAddress').value,
+                fatherName: document.getElementById('fatherName').value,
+                fatherContact: document.getElementById('fatherContact').value,
+                fatherOccupation: document.getElementById('fatherOccupation').value,
+                motherName: document.getElementById('motherName').value,
+                motherContact: document.getElementById('motherContact').value,
+                motherOccupation: document.getElementById('motherOccupation').value,
+                guardianName: document.getElementById('guardianName').value,
+                guardianContact: document.getElementById('guardianContact').value,
+                emergencyName: document.getElementById('emergencyName').value,
+                emergencyRelationship: document.getElementById('emergencyRelationship').value,
+                emergencyContact: document.getElementById('emergencyContact').value,
+                elemSchool: document.getElementById('elemSchool').value,
+                elemYear: document.getElementById('elemYear').value,
+                elemAddress: document.getElementById('elemAddress').value,
+                elemOrg: document.getElementById('elemOrg').value,
+                jhsSchool: document.getElementById('jhsSchool').value,
+                jhsYear: document.getElementById('jhsYear').value,
+                jhsAddress: document.getElementById('jhsAddress').value,
+                jhsOrg: document.getElementById('jhsOrg').value,
+                shsSchool: document.getElementById('shsSchool').value,
+                shsYear: document.getElementById('shsYear').value,
+                shsAddress: document.getElementById('shsAddress').value,
+                shsOrg: document.getElementById('shsOrg').value
+            };
+            
+            // Update profile display with basic info
+            if (data.personalInfo.firstName || data.personalInfo.lastName) {
+                data.profile.fullName = `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim();
+            }
+            if (data.personalInfo.emailAddress) {
+                data.profile.email = data.personalInfo.emailAddress;
+            }
+            if (data.personalInfo.studentId) {
+                data.profile.memberId = data.personalInfo.studentId;
+            }
+            
+            saveSharedData(data);
+            showToast('Personal information saved successfully');
+            
+            // Refresh profile display if on profile page
+            if (document.getElementById('profileContent').classList.contains('active')) {
+                loadProfile();
+            }
+        }
+
+        // Load personal and educational information
+        function loadPersonalInfo() {
+            const data = getSharedData();
+            const info = data.personalInfo || {};
+            
+            // Load all form fields
+            document.getElementById('semester').value = info.semester || '';
+            document.getElementById('schoolYear').value = info.schoolYear || '';
+            
+            // Set radio buttons for classification
+            if (info.classification) {
+                const classRadio = document.querySelector(`input[name="classification"][value="${info.classification}"]`);
+                if (classRadio) classRadio.checked = true;
+            }
+            document.getElementById('classificationSpecify').value = info.classificationSpecify || '';
+            
+            // Set radio buttons for member type
+            if (info.memberType) {
+                const typeRadio = document.querySelector(`input[name="memberType"][value="${info.memberType}"]`);
+                if (typeRadio) typeRadio.checked = true;
+            }
+            
+            // Personal information
+            document.getElementById('lastName').value = info.lastName || '';
+            document.getElementById('firstName').value = info.firstName || '';
+            document.getElementById('middleName').value = info.middleName || '';
+            document.getElementById('birthdate').value = info.birthdate || '';
+            document.getElementById('sex').value = info.sex || '';
+            document.getElementById('studentId').value = info.studentId || '';
+            document.getElementById('nationality').value = info.nationality || '';
+            document.getElementById('religion').value = info.religion || '';
+            document.getElementById('civilStatus').value = info.civilStatus || '';
+            document.getElementById('bloodType').value = info.bloodType || '';
+            document.getElementById('mobileNumber').value = info.mobileNumber || '';
+            document.getElementById('emailAddress').value = info.emailAddress || '';
+            document.getElementById('homeAddress').value = info.homeAddress || '';
+            document.getElementById('campusAddress').value = info.campusAddress || '';
+            
+            // Parent/Guardian information
+            document.getElementById('fatherName').value = info.fatherName || '';
+            document.getElementById('fatherContact').value = info.fatherContact || '';
+            document.getElementById('fatherOccupation').value = info.fatherOccupation || '';
+            document.getElementById('motherName').value = info.motherName || '';
+            document.getElementById('motherContact').value = info.motherContact || '';
+            document.getElementById('motherOccupation').value = info.motherOccupation || '';
+            document.getElementById('guardianName').value = info.guardianName || '';
+            document.getElementById('guardianContact').value = info.guardianContact || '';
+            
+            // Emergency contact
+            document.getElementById('emergencyName').value = info.emergencyName || '';
+            document.getElementById('emergencyRelationship').value = info.emergencyRelationship || '';
+            document.getElementById('emergencyContact').value = info.emergencyContact || '';
+            
+            // Educational background
+            document.getElementById('elemSchool').value = info.elemSchool || '';
+            document.getElementById('elemYear').value = info.elemYear || '';
+            document.getElementById('elemAddress').value = info.elemAddress || '';
+            document.getElementById('elemOrg').value = info.elemOrg || '';
+            document.getElementById('jhsSchool').value = info.jhsSchool || '';
+            document.getElementById('jhsYear').value = info.jhsYear || '';
+            document.getElementById('jhsAddress').value = info.jhsAddress || '';
+            document.getElementById('jhsOrg').value = info.jhsOrg || '';
+            document.getElementById('shsSchool').value = info.shsSchool || '';
+            document.getElementById('shsYear').value = info.shsYear || '';
+            document.getElementById('shsAddress').value = info.shsAddress || '';
+            document.getElementById('shsOrg').value = info.shsOrg || '';
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const page = this.getAttribute('data-page');
+                
+                // Update active states
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                this.parentElement.classList.add('active');
+                
+                // Update content
+                document.querySelectorAll('.page-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(page + 'Content').classList.add('active');
+                
+                // Update header
+                const titles = {
+                    profile: { title: 'Profile', subtitle: 'View and manage your profile information' },
+                    events: { title: 'Events', subtitle: 'Your event participation and attendance history' },
+                    notes: { title: 'Personal Information', subtitle: 'Complete your personal and educational details' }
+                };
+                
+                document.getElementById('pageTitle').textContent = titles[page].title;
+                document.getElementById('pageSubtitle').textContent = titles[page].subtitle;
+                
+                // Load specific page content
+                if (page === 'profile') {
+                    loadProfile();
+                } else if (page === 'events') {
+                    loadEvents();
+                } else if (page === 'notes') {
+                    loadPersonalInfo();
+                }
+                
+                // Close mobile sidebar
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('show');
+                }
+            });
+        });
+
+        // Toast notification
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.innerHTML = `<i class="fas fa-${isError ? 'exclamation-circle' : 'check-circle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Mobile sidebar toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        function checkUpcomingEvents() {
+            const data = getSharedData();
+            const events = data.events || [];
+            
+            // Filter events with "upcoming" status or status containing "upcoming"
+            const upcomingEvents = events.filter(e => 
+                e.status && e.status.toLowerCase().includes('upcoming')
+            );
+            
+            const notificationBox = document.getElementById('upcomingNotification');
+            const upcomingList = document.getElementById('upcomingEventsList');
+            
+            if (upcomingEvents.length > 0) {
+                // Show notification box
+                notificationBox.classList.remove('hidden');
+                
+                // Populate upcoming events list
+                upcomingList.innerHTML = upcomingEvents.map(event => 
+                    `<li><strong>${event.name}</strong> - ${formatDate(event.date)}</li>`
+                ).join('');
+                
+                // Show toast notification on page load
+                showUpcomingEventsToast(upcomingEvents);
+            } else {
+                // Hide notification box
+                notificationBox.classList.add('hidden');
+            }
+        }
+
+        function showUpcomingEventsToast(upcomingEvents) {
+            const count = upcomingEvents.length;
+            const message = count === 1 
+                ? `You have 1 upcoming event: ${upcomingEvents[0].name}` 
+                : `You have ${count} upcoming events scheduled`;
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.background = '#f9a825';
+            toast.innerHTML = `<i class="fas fa-bell"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        // Initialize all data on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            loadProfile();
+            loadEvents();
+            loadPersonalInfo(); // Load personal info on initial load
+            checkUpcomingEvents();
+        });
+
+        // Listen for storage changes from admin.html
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY) {
+                loadProfile();
+                loadEvents();
+                loadPersonalInfo(); // Reload personal info if data changes
+                checkUpcomingEvents();
+            }
+        });
+    </script>
+</body>
+</html>

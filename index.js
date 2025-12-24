@@ -449,9 +449,6 @@ function openReservationModal() {
   const modal = document.getElementById("reservationModal")
   modal.classList.add("show")
 
-  // Clear the form
-  document.getElementById("eventReservationForm").reset()
-
   // Pre-fill email if user is logged in
   if (isUserLoggedIn && currentUserInfo && currentUserInfo.email) {
     document.getElementById("res-email").value = currentUserInfo.email
@@ -464,108 +461,117 @@ function closeReservationModal() {
 
 function saveReservationData() {
   return {
-    fullName: document.getElementById("res-fullName").value,
+    eventName: document.getElementById("res-event-name").value,
+    eventDate: document.getElementById("res-event-date").value,
+    eventVenue: document.getElementById("res-event-venue").value,
+    firstName: document.getElementById("res-firstName").value,
+    lastName: document.getElementById("res-lastName").value,
     email: document.getElementById("res-email").value,
     mobile: document.getElementById("res-mobile").value,
-    address: document.getElementById("res-address").value,
-    receiveConfirmation: document.getElementById("res-receive-confirmation").checked,
+    organization: document.getElementById("res-organization").value,
+    notes: document.getElementById("res-notes").value,
+    categories: Array.from(document.querySelectorAll('input[name="artCategory"]:checked')).map((cb) => cb.value),
   }
 }
 
 function restoreReservationData(data) {
-  document.getElementById("res-fullName").value = data.fullName
+  document.getElementById("res-event-name").value = data.eventName
+  document.getElementById("res-event-date").value = data.eventDate
+  document.getElementById("res-event-venue").value = data.eventVenue
+  document.getElementById("res-firstName").value = data.firstName
+  document.getElementById("res-lastName").value = data.lastName
   document.getElementById("res-email").value = data.email
   document.getElementById("res-mobile").value = data.mobile
-  document.getElementById("res-address").value = data.address || ""
-  document.getElementById("res-receive-confirmation").checked = data.receiveConfirmation || false
+  document.getElementById("res-organization").value = data.organization
+  document.getElementById("res-notes").value = data.notes
+
+  // Restore checkboxes
+  data.categories.forEach((cat) => {
+    const checkbox = document.querySelector(`input[name="artCategory"][value="${cat}"]`)
+    if (checkbox) checkbox.checked = true
+  })
 }
 
 function handleReservationSubmit(event) {
   event.preventDefault()
 
-  const eventName = document.getElementById("display-event-name").textContent
-  const eventDateTime = document.getElementById("display-event-datetime").textContent
-  const eventVenue = document.getElementById("display-event-venue").textContent
-  const ticketType = document.getElementById("display-ticket-type").textContent
+  if (!isUserLoggedIn) {
+    // Save the form data
+    savedReservationData = saveReservationData()
 
-  // Get client information
-  const fullName = document.getElementById("res-fullName").value
-  const email = document.getElementById("res-email").value
-  const mobile = document.getElementById("res-mobile").value
-  const address = document.getElementById("res-address").value
-  const acknowledged = document.getElementById("res-acknowledge").checked
-  const receiveConfirmation = document.getElementById("res-receive-confirmation").checked
+    // Close reservation modal
+    closeReservationModal()
 
-  if (!acknowledged) {
-    showToast("Please acknowledge the on-site collection terms.", "error")
+    // Show message and prompt login
+    showToast("Please login or create an account to submit your reservation.", "error")
+
+    setTimeout(() => {
+      currentLoginRole = "reservation"
+      openLoginModal("reservation")
+    }, 500)
     return
   }
 
-  // Generate reservation ID
+  // Get event details
+  const eventName = document.getElementById("res-event-name").value
+  const eventDate = document.getElementById("res-event-date").value
+  const eventVenue = document.getElementById("res-event-venue").value
+
+  // Get client information
+  const firstName = document.getElementById("res-firstName").value
+  const lastName = document.getElementById("res-lastName").value
+  const email = document.getElementById("res-email").value
+  const mobile = document.getElementById("res-mobile").value
+  const organization = document.getElementById("res-organization").value
+  const notes = document.getElementById("res-notes").value
+  const documents = document.getElementById("res-documents").files
+
+  // Get selected art categories
+  const categories = Array.from(document.querySelectorAll('input[name="artCategory"]:checked')).map((cb) => cb.value)
+
+  if (categories.length === 0) {
+    showToast("Please select at least one art category.", "error")
+    return
+  }
+
   const reservationId = generateReservationId()
 
   const formData = {
     reservationId: reservationId,
-    status: "Confirmed",
-    bookingType: isUserLoggedIn ? "registered" : "guest",
-    userId: isUserLoggedIn ? currentUserInfo.id : null,
-    userEmail: isUserLoggedIn ? currentUserInfo.email : email,
+    status: "Pending Verification",
+    userId: currentUserInfo.id,
+    userEmail: currentUserInfo.email,
     eventDetails: {
-      eventName: eventName,
-      dateTime: eventDateTime,
-      venue: eventVenue,
-      ticketType: ticketType,
+      eventName,
+      eventDate,
+      eventVenue,
     },
     clientInfo: {
-      fullName: fullName,
-      email: email,
-      mobile: mobile,
-      address: address || "N/A",
+      fullName: `${firstName} ${lastName}`,
+      firstName,
+      lastName,
+      email,
+      mobile,
+      organization,
     },
-    receiveConfirmation: receiveConfirmation,
+    artCategories: categories,
+    notes,
+    documents:
+      documents.length > 0
+        ? Array.from(documents)
+            .map((f) => f.name)
+            .join(", ")
+        : "None",
     submittedAt: new Date().toISOString(),
-    isDownloaded: false,
   }
 
   console.log("Reservation submitted:", formData)
-
-  saveReservationToStorage(formData)
 
   closeReservationModal()
   showReservationConfirmation(formData)
 
   // Reset form
   document.getElementById("eventReservationForm").reset()
-}
-
-function saveReservationToStorage(reservation) {
-  const reservations = JSON.parse(localStorage.getItem("reservations") || "[]")
-  reservations.push(reservation)
-  localStorage.setItem("reservations", JSON.stringify(reservations))
-}
-
-function getUserReservations() {
-  if (!isUserLoggedIn) return []
-
-  const reservations = JSON.parse(localStorage.getItem("reservations") || "[]")
-  return reservations.filter((r) => r.userId === currentUserInfo.id)
-}
-
-function getReservationById(reservationId) {
-  const reservations = JSON.parse(localStorage.getItem("reservations") || "[]")
-  return reservations.find((r) => r.reservationId === reservationId)
-}
-
-function updateReservationInStorage(reservationId, updates) {
-  const reservations = JSON.parse(localStorage.getItem("reservations") || "[]")
-  const index = reservations.findIndex((r) => r.reservationId === reservationId)
-
-  if (index !== -1) {
-    reservations[index] = { ...reservations[index], ...updates }
-    localStorage.setItem("reservations", JSON.stringify(reservations))
-    return true
-  }
-  return false
 }
 
 function generateReservationId() {
@@ -576,20 +582,6 @@ function generateReservationId() {
 }
 
 function showReservationConfirmation(data) {
-  const isDownloaded = downloadedTickets.has(data.reservationId)
-  const downloadButtonHTML = isDownloaded
-    ? `<button disabled style="flex: 1; padding: 1rem 2rem; background: #ccc; color: #666; border: none; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; cursor: not-allowed;">
-         Downloaded
-       </button>`
-    : `<button onclick="downloadTicket('${data.reservationId}')" style="flex: 1; padding: 1rem 2rem; background: linear-gradient(135deg, #2c5530, #3d7040); color: white; border: none; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.3s ease;">
-         Download Ticket
-       </button>`
-
-  const accountTypeMessage =
-    data.bookingType === "guest"
-      ? '<div style="background-color: #fff3cd; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ffc107;"><p style="margin: 0; color: #856404; font-size: 0.9375rem;"><strong>Guest Booking:</strong> To track your tickets and manage bookings, consider creating an account.</p></div>'
-      : ""
-
   // Create confirmation modal HTML
   const confirmationHTML = `
     <div id="confirmationModal" class="modal show">
@@ -600,11 +592,9 @@ function showReservationConfirmation(data) {
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
           </div>
-          <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; color: #1a1a1a; margin-bottom: 0.5rem;">Booking Confirmed!</h2>
-          <p style="color: #6b6b6b; font-size: 1rem;">Your ticket reservation has been confirmed</p>
+          <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; color: #1a1a1a; margin-bottom: 0.5rem;">Reservation Submitted Successfully!</h2>
+          <p style="color: #6b6b6b; font-size: 1rem;">Your ticket reservation is now pending verification</p>
         </div>
-
-        ${accountTypeMessage}
 
         <div style="background-color: #fdfcfb; padding: 1.5rem; border-radius: 8px; border: 2px solid #d4af37; margin-bottom: 1.5rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.08);">
@@ -614,25 +604,17 @@ function showReservationConfirmation(data) {
           
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <span style="font-weight: 600; color: #1a1a1a; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Status</span>
-            <span style="display: inline-block; padding: 0.5rem 1rem; background-color: #d4edda; color: #155724; border-radius: 20px; font-size: 0.875rem; font-weight: 600;">✓ ${data.status}</span>
+            <span style="display: inline-block; padding: 0.5rem 1rem; background-color: #fff3cd; color: #856404; border-radius: 20px; font-size: 0.875rem; font-weight: 600;">⏳ ${data.status}</span>
           </div>
         </div>
 
         <div style="margin-bottom: 1.5rem;">
-          <h3 style="font-weight: 600; color: #1a1a1a; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Booking Details</h3>
+          <h3 style="font-weight: 600; color: #1a1a1a; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Reservation Details</h3>
           
           <div style="display: grid; gap: 0.75rem;">
             <div style="display: flex; justify-content: space-between;">
               <span style="color: #6b6b6b;">Event</span>
               <span style="font-weight: 600; color: #1a1a1a; text-align: right;">${data.eventDetails.eventName}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: #6b6b6b;">Date & Time</span>
-              <span style="font-weight: 600; color: #1a1a1a; text-align: right;">${data.eventDetails.dateTime}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: #6b6b6b;">Venue</span>
-              <span style="font-weight: 600; color: #1a1a1a; text-align: right;">${data.eventDetails.venue}</span>
             </div>
             <div style="display: flex; justify-content: space-between;">
               <span style="color: #6b6b6b;">Name</span>
@@ -646,24 +628,27 @@ function showReservationConfirmation(data) {
               <span style="color: #6b6b6b;">Mobile</span>
               <span style="font-weight: 600; color: #1a1a1a;">${data.clientInfo.mobile}</span>
             </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #6b6b6b;">Categories</span>
+              <span style="font-weight: 600; color: #1a1a1a; text-align: right;">${data.artCategories.join(", ")}</span>
+            </div>
           </div>
         </div>
 
         <div style="background-color: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #2c5530;">
           <p style="margin: 0; color: #1a1a1a; font-size: 0.9375rem; line-height: 1.6;">
-            <strong>Important Reminder:</strong><br>
-            Please bring this confirmation email to claim your ticket at the venue. Tickets are free / payment will be made on-site.
-            ${data.receiveConfirmation ? "<br><br>You will receive an SMS/email confirmation shortly." : ""}
+            <strong>What's Next?</strong><br>
+            Your reservation is being reviewed by our team. You will receive a confirmation email at <strong>${data.clientInfo.email}</strong> once your reservation has been verified. Please check your email regularly for updates.
           </p>
         </div>
-
-        ${isDownloaded ? '<div style="background-color: #d1ecf1; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #0c5460;"><p style="margin: 0; color: #0c5460; font-size: 0.9375rem;"><strong>Note:</strong> This ticket has been downloaded and can no longer be modified.</p></div>' : ""}
 
         <div style="display: flex; gap: 1rem;">
           <button onclick="closeConfirmationModal()" style="flex: 1; padding: 1rem 2rem; background: linear-gradient(135deg, #d4af37, #b8941f); color: white; border: none; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.3s ease;">
             Done
           </button>
-          ${downloadButtonHTML}
+          <button onclick="printReservation('${data.reservationId}')" style="flex: 1; padding: 1rem 2rem; background: white; color: #1a1a1a; border: 2px solid #d4af37; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.3s ease;">
+            Print
+          </button>
         </div>
       </div>
     </div>
@@ -671,304 +656,6 @@ function showReservationConfirmation(data) {
 
   // Append to body
   document.body.insertAdjacentHTML("beforeend", confirmationHTML)
-}
-
-function downloadTicket(reservationId) {
-  const reservation = getReservationById(reservationId)
-
-  if (!reservation) {
-    showToast("Reservation not found", "error")
-    return
-  }
-
-  downloadedTickets.add(reservationId)
-  saveDownloadedTickets()
-
-  updateReservationInStorage(reservationId, { isDownloaded: true })
-
-  const ticketHTML = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Ticket Receipt - ${reservation.reservationId}</title>
-      <meta charset="UTF-8">
-      <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        body {
-          font-family: 'Courier New', monospace;
-          background: #f5f5f5;
-          padding: 20px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-        }
-        .receipt {
-          background: white;
-          width: 100%;
-          max-width: 400px;
-          padding: 30px 20px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-          border: 3px solid #d4af37;
-        }
-        .receipt-header {
-          text-align: center;
-          border-bottom: 2px dashed #333;
-          padding-bottom: 20px;
-          margin-bottom: 20px;
-        }
-        .receipt-header h1 {
-          font-size: 24px;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          margin-bottom: 5px;
-        }
-        .receipt-header p {
-          font-size: 12px;
-          color: #666;
-          margin: 3px 0;
-        }
-        .ticket-id {
-          text-align: center;
-          font-size: 18px;
-          font-weight: bold;
-          background: #000;
-          color: #fff;
-          padding: 10px;
-          margin: 20px 0;
-          letter-spacing: 2px;
-        }
-        .section {
-          margin: 20px 0;
-        }
-        .section-title {
-          font-size: 14px;
-          font-weight: bold;
-          text-transform: uppercase;
-          border-bottom: 1px solid #333;
-          padding-bottom: 5px;
-          margin-bottom: 10px;
-          letter-spacing: 1px;
-        }
-        .row {
-          display: flex;
-          justify-content: space-between;
-          padding: 8px 0;
-          font-size: 13px;
-          border-bottom: 1px dotted #ddd;
-        }
-        .row:last-child {
-          border-bottom: none;
-        }
-        .label {
-          font-weight: bold;
-          color: #333;
-        }
-        .value {
-          text-align: right;
-          color: #000;
-          max-width: 60%;
-          word-wrap: break-word;
-        }
-        .status-badge {
-          display: inline-block;
-          background: #2c5530;
-          color: white;
-          padding: 5px 15px;
-          border-radius: 3px;
-          font-size: 12px;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-        .instructions {
-          background: #f9f9f9;
-          border: 1px solid #ddd;
-          padding: 15px;
-          margin: 20px 0;
-          font-size: 11px;
-          line-height: 1.6;
-        }
-        .instructions-title {
-          font-weight: bold;
-          font-size: 12px;
-          margin-bottom: 8px;
-          text-transform: uppercase;
-        }
-        .instructions ul {
-          margin-left: 15px;
-        }
-        .instructions li {
-          margin: 5px 0;
-        }
-        .footer {
-          text-align: center;
-          margin-top: 25px;
-          padding-top: 20px;
-          border-top: 2px dashed #333;
-          font-size: 11px;
-          color: #666;
-        }
-        .footer p {
-          margin: 5px 0;
-        }
-        .thank-you {
-          font-size: 16px;
-          font-weight: bold;
-          margin-top: 15px;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-        }
-        .print-btn {
-          display: block;
-          width: 100%;
-          padding: 15px;
-          background: #2c5530;
-          color: white;
-          border: none;
-          font-family: 'Courier New', monospace;
-          font-size: 14px;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          cursor: pointer;
-          margin-top: 20px;
-          border-radius: 3px;
-        }
-        .print-btn:hover {
-          background: #3d7040;
-        }
-        @media print {
-          body {
-            background: white;
-            padding: 0;
-          }
-          .receipt {
-            box-shadow: none;
-            max-width: 100%;
-          }
-          .no-print {
-            display: none !important;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="receipt">
-        <div class="receipt-header">
-          <h1>🎭 TICKET</h1>
-          <p>CULTURAL SHOW</p>
-          <p>━━━━━━━━━━━━━━━━━━━━</p>
-        </div>
-
-        <div class="ticket-id">
-          ${reservation.reservationId}
-        </div>
-
-        <div class="section">
-          <div class="section-title">Event Information</div>
-          <div class="row">
-            <span class="label">Event:</span>
-            <span class="value">${reservation.eventDetails.eventName}</span>
-          </div>
-          <div class="row">
-            <span class="label">Date/Time:</span>
-            <span class="value">${reservation.eventDetails.dateTime}</span>
-          </div>
-          <div class="row">
-            <span class="label">Venue:</span>
-            <span class="value">${reservation.eventDetails.venue}</span>
-          </div>
-          <div class="row">
-            <span class="label">Type:</span>
-            <span class="value">${reservation.eventDetails.ticketType}</span>
-          </div>
-          <div class="row">
-            <span class="label">Status:</span>
-            <span class="value"><span class="status-badge">${reservation.status}</span></span>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">Attendee Information</div>
-          <div class="row">
-            <span class="label">Name:</span>
-            <span class="value">${reservation.clientInfo.fullName}</span>
-          </div>
-          <div class="row">
-            <span class="label">Email:</span>
-            <span class="value">${reservation.clientInfo.email}</span>
-          </div>
-          <div class="row">
-            <span class="label">Mobile:</span>
-            <span class="value">${reservation.clientInfo.mobile}</span>
-          </div>
-          ${
-            reservation.clientInfo.address && reservation.clientInfo.address !== "N/A"
-              ? `<div class="row">
-            <span class="label">Address:</span>
-            <span class="value">${reservation.clientInfo.address}</span>
-          </div>`
-              : ""
-          }
-        </div>
-
-        <div class="instructions">
-          <div class="instructions-title">⚠️ Important Instructions</div>
-          <ul>
-            <li>Bring this ticket (printed or on mobile)</li>
-            <li>Arrive 15 minutes before start time</li>
-            <li>Entry is free / Pay at venue if applicable</li>
-            <li>Ticket cannot be modified after download</li>
-            <li>Show this confirmation at venue entrance</li>
-          </ul>
-        </div>
-
-        <div class="footer">
-          <p>BOOKING DATE: ${new Date(reservation.submittedAt).toLocaleString()}</p>
-          <p>TYPE: ${reservation.bookingType === "guest" ? "GUEST BOOKING" : "REGISTERED USER"}</p>
-          <p class="thank-you">Thank You!</p>
-          <p>━━━━━━━━━━━━━━━━━━━━</p>
-        </div>
-
-        <button onclick="window.print()" class="print-btn no-print">Print Ticket</button>
-      </div>
-    </body>
-    </html>
-  `
-
-  const blob = new Blob([ticketHTML], { type: "text/html" })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = `ticket-${reservationId}.html`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-
-  showToast("Ticket downloaded successfully! You can no longer edit this booking.", "success")
-
-  closeConfirmationModal()
-}
-
-let downloadedTickets = new Set()
-
-// Load downloaded tickets from localStorage on startup
-function loadDownloadedTickets() {
-  const saved = localStorage.getItem("downloadedTickets")
-  if (saved) {
-    downloadedTickets = new Set(JSON.parse(saved))
-  }
-}
-
-function saveDownloadedTickets() {
-  localStorage.setItem("downloadedTickets", JSON.stringify([...downloadedTickets]))
 }
 
 function closeConfirmationModal() {
@@ -979,9 +666,7 @@ function closeConfirmationModal() {
 }
 
 function printReservation(reservationId) {
+  showToast(`Printing reservation ${reservationId}...`, "success")
+  // In a real application, this would trigger a print dialog with formatted reservation details
   window.print()
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  loadDownloadedTickets()
-})

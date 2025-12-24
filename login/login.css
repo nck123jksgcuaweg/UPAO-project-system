@@ -1,0 +1,238 @@
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 8px 8px 0px #000000;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #000000;
+            border-radius: 50%;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+            color: #000000;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #000000;
+        }
+
+        .objective {
+            font-size: 13px;
+            color: #000000;
+            margin-top: 10px;
+            line-height: 1.5;
+            text-align: left;
+            padding: 10px;
+            border: 2px solid #000000;
+            background-color: #ffffff;
+        }
+
+        .objective strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border: 2px solid #000000;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background-color: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .tab:first-child {
+            border-right: 2px solid #000000;
+        }
+
+        .tab.active {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        /* Added section heading styles */
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+            margin: 20px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #000000;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #000000;
+            font-size: 14px;
+        }
+
+        /* Added styles for select, radio, and checkbox inputs */
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #000000;
+            background-color: #ffffff;
+            color: #000000;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+        }
+
+        /* Added radio and checkbox group styles */
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-group label,
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"],
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        /* Added row layout for multiple fields */
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #000000;
+            color: #ffffff;
+            border: 2px solid #000000;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border: 2px solid #000000;
+            display: none;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.success {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .message.error {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    
